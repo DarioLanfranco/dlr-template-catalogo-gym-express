@@ -17,6 +17,7 @@ export interface Contact {
   address: string;
   googleMapsLink: string;
   businessHours: string;
+  whatsappNumber: string;
 }
 
 export interface Social {
