@@ -37,6 +37,7 @@ const contactSchema = z.object({
   address: z.string().min(1, 'Address cannot be empty'),
   googleMapsLink: urlSchema,
   businessHours: z.string().min(1, 'Business hours cannot be empty'),
+  whatsappNumber: z.string().min(1, 'WhatsApp number cannot be empty'),
 });
 
 // Social schema (all fields optional)

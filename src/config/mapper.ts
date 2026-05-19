@@ -82,6 +82,7 @@ export function transformConfig(rawConfig: ClientConfigInput): UIConfig {
     address: sanitizeString(rawConfig.contact.address),
     googleMapsLink: sanitizeUrl(rawConfig.contact.googleMapsLink),
     businessHours: normalizeBusinessHours(rawConfig.contact.businessHours),
+    whatsappNumber: sanitizeString(rawConfig.contact.whatsappNumber),
   };
 
   // Process social links (sanitize URLs if present)

@@ -20,6 +20,7 @@ const rawIronPulseConfig = {
     address: 'Av. Corrientes 1234, Buenos Aires',
     googleMapsLink: 'https://maps.google.com/?q=Av.+Corrientes+1234+Buenos+Aires',
     businessHours: 'Lunes a Viernes: 6:00 - 22:00 | Sábados: 8:00 - 18:00',
+    whatsappNumber: '5491112345678',
   },
   social: {
     instagram: 'https://instagram.com/ironpulsegym',

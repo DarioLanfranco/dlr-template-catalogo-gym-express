@@ -1,6 +1,7 @@
 ---
 import { siteConfig } from '../config/site-config';
 import '../styles/global.css';
+import WhatsAppButton from '../components/common/WhatsAppButton.astro';
 
 interface Props {
 	title: string;
@@ -38,6 +39,7 @@ const { title, description = siteConfig.description } = Astro.props;
 		<footer>
 			<slot name="footer" />
 		</footer>
+		<WhatsAppButton />
 	</body>
 </html>
 
