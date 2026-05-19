@@ -61,7 +61,7 @@ import gymHero from '../assets/images/gym1.webp';
 	</main>
 
 	<footer slot="footer">
-		<p>&copy; 2024 {siteConfig.siteName}. Todos los derechos reservados.</p>
+		<p>&copy; 2026 Copyright {siteConfig.siteName}. Todos los derechos reservados./Desarrollado por consultoria Lanfranco</p>
 	</footer>
 </Layout>
 
@@ -111,17 +111,19 @@ import gymHero from '../assets/images/gym1.webp';
 		padding: 1rem 2rem;
 		font-weight: 600;
 		border-radius: 0.5rem;
-		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+		border: 2px solid transparent;
 	}
 
 	.cta-button:hover {
 		opacity: 0.9;
-		transform: translateY(-2px);
+		transform: scale(1.03);
 		box-shadow: 0 4px 12px rgba(255, 159, 28, 0.3);
+		border-color: rgba(255, 159, 28, 0.5);
 	}
 
 	.cta-button:active {
-		transform: translateY(0);
+		transform: scale(0.98);
 	}
 
 	.hero-image {
@@ -163,12 +165,14 @@ import gymHero from '../assets/images/gym1.webp';
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+		border: 1px solid transparent;
 	}
 
 	.service-card:hover {
-		transform: translateY(-4px);
+		transform: scale(1.03);
 		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+		border-color: var(--color-accent);
 	}
 
 	.service-card h3 {
