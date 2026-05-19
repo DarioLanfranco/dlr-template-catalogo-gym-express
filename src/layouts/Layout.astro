@@ -1,23 +1,56 @@
+---
+import { siteConfig } from '../config/site-config';
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = siteConfig.description } = Astro.props;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content={description} />
+		<meta name="generator" content={Astro.generator} />
+		
+		<!-- OpenGraph -->
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		
+		<title>{title} | {siteConfig.siteName}</title>
 	</head>
 	<body>
-		<slot />
+		<header>
+			<slot name="header" />
+		</header>
+		<main>
+			<slot />
+		</main>
+		<footer>
+			<slot name="footer" />
+		</footer>
 	</body>
 </html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
+<style define:vars={{ 
+	primary: siteConfig.theme.primary,
+	accent: siteConfig.theme.accent,
+	background: siteConfig.theme.background,
+	text: siteConfig.theme.text 
+}} is:global>
+	:root {
+		--color-primary: var(--primary);
+		--color-accent: var(--accent);
+		--color-background: var(--background);
+		--color-text: var(--text);
 	}
 </style>
