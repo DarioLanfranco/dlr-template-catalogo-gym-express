@@ -66,12 +66,14 @@ export function transformConfig(rawConfig: ClientConfigInput): UIConfig {
           id: service.id || generateSlug(service.title),
           title: sanitizeString(service.title),
           description: sanitizeString(service.description),
+          image: sanitizeString(service.image),
         }))
       : [
           {
             id: 'service-placeholder',
             title: 'Próximamente',
             description: 'Nuestros servicios estarán disponibles pronto. Contáctanos para más información.',
+            image: '',
           },
         ];
 

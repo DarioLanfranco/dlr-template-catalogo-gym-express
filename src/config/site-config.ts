@@ -33,22 +33,26 @@ const rawIronPulseConfig = {
       title: "Entrenamiento Personal",
       description:
         "Sesiones 1 a 1 con entrenadores certificados adaptadas a tus objetivos específicos.",
+      image: "coachs1.webp",
     },
     {
       title: "Clases Grupales",
       description:
         "Yoga, Pilates, HIIT y más en un ambiente motivador y energético.",
+      image: "spinning1.webp",
     },
     {
       title: "Nutrición Deportiva",
       description:
         "Planes nutricionales personalizados para maximizar tus resultados.",
+      image: "pilates1.webp",
     },
     {
       id: "strength-training",
       title: "Entrenamiento de Fuerza",
       description:
         "Programas especializados en hipertrofia y fuerza con equipamiento profesional.",
+      image: "gym12.webp",
     },
   ],
 };

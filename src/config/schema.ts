@@ -20,6 +20,7 @@ const serviceSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(1, 'Service title cannot be empty'),
   description: z.string().min(1, 'Service description cannot be empty'),
+  image: z.string().min(1, 'Service image cannot be empty'),
 });
 
 // Theme schema
