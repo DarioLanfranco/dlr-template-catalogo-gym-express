@@ -3,6 +3,20 @@ import { siteConfig } from '../config/site-config';
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import gymHero from '../assets/images/gym1.webp';
+import gymHero2 from '../assets/images/gym14.webp';
+import gymHero3 from '../assets/images/gym15.webp';
+import coachesImage from '../assets/images/coachs1.webp';
+import coachs1 from '../assets/images/coachs1.webp';
+import spinning1 from '../assets/images/spinning1.webp';
+import pilates1 from '../assets/images/pilates1.webp';
+import gym12 from '../assets/images/gym12.webp';
+
+const serviceImages = {
+	'coachs1.webp': coachs1,
+	'spinning1.webp': spinning1,
+	'pilates1.webp': pilates1,
+	'gym12.webp': gym12,
+};
 ---
 
 <Layout title={siteConfig.siteName}>
@@ -13,36 +27,91 @@ import gymHero from '../assets/images/gym1.webp';
 	</header>
 
 	<main>
-		<section class="hero">
+		<section class="hero reveal-on-scroll">
 			<div class="hero-content">
 				<h2>{siteConfig.tagline}</h2>
 				<p>{siteConfig.description}</p>
 				<a href="#servicios" class="cta-button">Ver Servicios</a>
 			</div>
-			<div class="hero-image">
-				<Image 
-					src={gymHero} 
-					alt="Gym interior" 
-					width={1200} 
-					height={800} 
-					loading="eager" 
-				/>
+			<div class="hero-grid">
+				<div class="hero-image hero-image-primary">
+					<Image 
+						src={gymHero} 
+						alt="Gym interior" 
+						width={800} 
+						height={600} 
+						loading="eager" 
+					/>
+				</div>
+				<div class="hero-image hero-image-secondary">
+					<Image 
+						src={gymHero2} 
+						alt="Training equipment" 
+						width={400} 
+						height={300} 
+						loading="eager" 
+					/>
+				</div>
+				<div class="hero-image hero-image-tertiary">
+					<Image 
+						src={gymHero3} 
+						alt="Gym atmosphere" 
+						width={400} 
+						height={300} 
+						loading="eager" 
+					/>
+				</div>
 			</div>
 		</section>
 
-		<section id="servicios" class="services">
+		<section id="quienes-somos" class="about reveal-on-scroll">
+			<div class="about-content">
+				<div class="about-text">
+					<h2>Quiénes Somos</h2>
+					<p>
+						En Iron Pulse Gym, creemos que el fitness es más que ejercicio: es un estilo de vida. 
+						Nuestro equipo de entrenadores certificados está comprometido a ayudarte a alcanzar tus metas 
+						personales con programas personalizados y equipamiento de última generación.
+					</p>
+					<p>
+						Desde 2015, hemos transformado cientos de vidas a través de entrenamiento de alta calidad, 
+						nutrición deportiva y un ambiente motivador que te impulsa a dar lo mejor de ti cada día.
+					</p>
+				</div>
+				<div class="about-image">
+					<Image 
+						src={coachesImage} 
+						alt="Nuestros entrenadores profesionales" 
+						width={800} 
+						height={600} 
+						loading="lazy" 
+					/>
+				</div>
+			</div>
+		</section>
+
+		<section id="servicios" class="services reveal-on-scroll">
 			<h2>Nuestros Servicios</h2>
 			<div class="services-grid">
 				{siteConfig.services.map((service) => (
-					<article class="service-card" id={service.id}>
-						<h3>{service.title}</h3>
-						<p>{service.description}</p>
+					<article class="service-card reveal-on-scroll" id={service.id}>
+						<Image 
+							src={serviceImages[service.image as keyof typeof serviceImages]} 
+							alt={service.title}
+							width={600}
+							height={600}
+							class="service-card-image"
+						/>
+						<div class="service-card-overlay">
+							<h3>{service.title}</h3>
+							<p>{service.description}</p>
+						</div>
 					</article>
 				))}
 			</div>
 		</section>
 
-		<section class="info">
+		<section class="info reveal-on-scroll">
 			<h2>Información</h2>
 			<div class="info-content">
 				<div class="info-item">
@@ -64,6 +133,26 @@ import gymHero from '../assets/images/gym1.webp';
 		<p>&copy; 2026 Copyright {siteConfig.siteName}. Todos los derechos reservados./Desarrollado por consultoria Lanfranco</p>
 	</footer>
 </Layout>
+
+<script>
+	const observerOptions = {
+		root: null,
+		rootMargin: '0px',
+		threshold: 0.1
+	};
+
+	const observer = new IntersectionObserver((entries) => {
+		entries.forEach((entry) => {
+			if (entry.isIntersecting) {
+				entry.target.classList.add('is-visible');
+			}
+		});
+	}, observerOptions);
+
+	document.querySelectorAll('.reveal-on-scroll').forEach((element) => {
+		observer.observe(element);
+	});
+</script>
 
 <style>
 	nav {
@@ -126,13 +215,80 @@ import gymHero from '../assets/images/gym1.webp';
 		transform: scale(0.98);
 	}
 
+	.hero-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: auto auto;
+		gap: 1rem;
+	}
+
 	.hero-image {
-		aspect-ratio: 3/2;
 		overflow: hidden;
 		border-radius: 1rem;
+		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.hero-image:hover {
+		transform: scale(1.02);
+	}
+
+	.hero-image-primary {
+		grid-column: 1 / -1;
+		aspect-ratio: 4/3;
+	}
+
+	.hero-image-secondary,
+	.hero-image-tertiary {
+		aspect-ratio: 4/3;
 	}
 
 	.hero-image img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.about {
+		padding: 6rem 2rem;
+		max-width: 1400px;
+		margin: 0 auto;
+		background-color: rgba(255, 255, 255, 0.03);
+	}
+
+	.about-content {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 4rem;
+		align-items: center;
+	}
+
+	.about-text h2 {
+		font-size: 2.5rem;
+		font-weight: 700;
+		margin-bottom: 2rem;
+		color: var(--color-accent);
+	}
+
+	.about-text p {
+		font-size: 1.125rem;
+		line-height: 1.8;
+		margin-bottom: 1.5rem;
+		color: var(--color-background);
+		opacity: 0.9;
+	}
+
+	.about-image {
+		aspect-ratio: 4/3;
+		overflow: hidden;
+		border-radius: 1rem;
+		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.about-image:hover {
+		transform: scale(1.02);
+	}
+
+	.about-image img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
@@ -158,33 +314,49 @@ import gymHero from '../assets/images/gym1.webp';
 	}
 
 	.service-card {
-		background-color: var(--color-background);
-		padding: 2rem;
+		position: relative;
 		border-radius: 0.75rem;
 		aspect-ratio: 1/1;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-		border: 1px solid transparent;
+		overflow: hidden;
+		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.service-card:hover {
 		transform: scale(1.03);
-		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-		border-color: var(--color-accent);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+	}
+
+	.service-card-image {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.service-card-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4), transparent);
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding: 2rem;
 	}
 
 	.service-card h3 {
 		font-size: 1.5rem;
 		font-weight: 600;
 		margin-bottom: 1rem;
-		color: var(--color-primary);
+		color: #FFFFFF;
 	}
 
 	.service-card p {
-		color: var(--color-text);
-		opacity: 0.8;
+		color: rgba(255, 255, 255, 0.9);
 		line-height: 1.6;
 	}
 
@@ -240,6 +412,23 @@ import gymHero from '../assets/images/gym1.webp';
 		}
 
 		.hero-content h2 {
+			font-size: 2rem;
+		}
+
+		.hero-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.about {
+			padding: 4rem 1.5rem;
+		}
+
+		.about-content {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+
+		.about-text h2 {
 			font-size: 2rem;
 		}
 
