@@ -102,6 +102,22 @@ export function transformConfig(rawConfig: ClientConfigInput): UIConfig {
     text: rawConfig.theme.text,
   };
 
+  // Process about section
+  const about = {
+    history: {
+      title: sanitizeString(rawConfig.about.history.title),
+      subtitle: sanitizeString(rawConfig.about.history.subtitle),
+      text1: sanitizeString(rawConfig.about.history.text1),
+      text2: sanitizeString(rawConfig.about.history.text2),
+      image: sanitizeString(rawConfig.about.history.image),
+    },
+    mission: {
+      title: sanitizeString(rawConfig.about.mission.title),
+      text: sanitizeString(rawConfig.about.mission.text),
+      image: sanitizeString(rawConfig.about.mission.image),
+    },
+  };
+
   return {
     siteName,
     tagline,
@@ -110,5 +126,6 @@ export function transformConfig(rawConfig: ClientConfigInput): UIConfig {
     contact,
     social,
     services,
+    about,
   };
 }

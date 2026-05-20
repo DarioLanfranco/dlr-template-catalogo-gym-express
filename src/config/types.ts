@@ -27,6 +27,25 @@ export interface Social {
   twitter?: string;
 }
 
+export interface History {
+  title: string;
+  subtitle: string;
+  text1: string;
+  text2: string;
+  image: string;
+}
+
+export interface Mission {
+  title: string;
+  text: string;
+  image: string;
+}
+
+export interface About {
+  history: History;
+  mission: Mission;
+}
+
 export interface UIConfig {
   siteName: string;
   tagline: string;
@@ -35,4 +54,5 @@ export interface UIConfig {
   contact: Contact;
   social: Social;
   services: Service[];
+  about: About;
 }

@@ -55,6 +55,20 @@ const rawIronPulseConfig = {
       image: "gym12.webp",
     },
   ],
+  about: {
+    history: {
+      title: "Nuestra Historia",
+      subtitle: "Desde 2015 transformando vidas",
+      text1: "Iron Pulse Gym nació de la pasión por el fitness y el deseo de crear un espacio donde cada persona pudiera alcanzar su máximo potencial. Comenzamos como un pequeño estudio de entrenamiento personal en el corazón de Buenos Aires.",
+      text2: "Hoy, somos un referente en la industria del fitness, con equipamiento de última generación y un equipo de entrenadores certificados comprometidos con tu éxito. Nuestra filosofía se basa en el entrenamiento personalizado, la nutrición inteligente y un ambiente motivador.",
+      image: "coachs1.webp",
+    },
+    mission: {
+      title: "Nuestra Misión",
+      text: "Transformar vidas a través del fitness de alta calidad, proporcionando entrenamiento personalizado, nutrición deportiva y un ambiente motivador que impulse a cada miembro a alcanzar sus metas y superar sus límites.",
+      image: "gym12.webp",
+    },
+  },
 };
 
 // Validate raw config against Zod schema

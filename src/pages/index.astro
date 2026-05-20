@@ -5,7 +5,6 @@ import Layout from '../layouts/Layout.astro';
 import gymHero from '../assets/images/gym1.webp';
 import gymHero2 from '../assets/images/gym14.webp';
 import gymHero3 from '../assets/images/gym15.webp';
-import coachesImage from '../assets/images/coachs1.webp';
 import coachs1 from '../assets/images/coachs1.webp';
 import spinning1 from '../assets/images/spinning1.webp';
 import pilates1 from '../assets/images/pilates1.webp';
@@ -23,11 +22,17 @@ const serviceImages = {
 	<header slot="header">
 		<nav>
 			<h1>{siteConfig.siteName}</h1>
+			<ul class="nav-links">
+				<li><a href="#inicio">Inicio</a></li>
+				<li><a href="#conocenos">Conócenos</a></li>
+				<li><a href="#servicios">Servicios</a></li>
+				<li><a href="#sucursal">Sucursal</a></li>
+			</ul>
 		</nav>
 	</header>
 
 	<main>
-		<section class="hero reveal-on-scroll">
+		<section id="inicio" class="hero reveal-on-scroll">
 			<div class="hero-content">
 				<h2>{siteConfig.tagline}</h2>
 				<p>{siteConfig.description}</p>
@@ -64,24 +69,36 @@ const serviceImages = {
 			</div>
 		</section>
 
-		<section id="quienes-somos" class="about reveal-on-scroll">
+		<section id="conocenos" class="about reveal-on-scroll">
 			<div class="about-content">
 				<div class="about-text">
-					<h2>Quiénes Somos</h2>
-					<p>
-						En Iron Pulse Gym, creemos que el fitness es más que ejercicio: es un estilo de vida. 
-						Nuestro equipo de entrenadores certificados está comprometido a ayudarte a alcanzar tus metas 
-						personales con programas personalizados y equipamiento de última generación.
-					</p>
-					<p>
-						Desde 2015, hemos transformado cientos de vidas a través de entrenamiento de alta calidad, 
-						nutrición deportiva y un ambiente motivador que te impulsa a dar lo mejor de ti cada día.
-					</p>
+					<p class="subtitle reveal-on-scroll">{siteConfig.about.history.subtitle}</p>
+					<h2 class="reveal-on-scroll">{siteConfig.about.history.title.toUpperCase()}</h2>
+					<p class="reveal-on-scroll">{siteConfig.about.history.text1}</p>
+					<p class="reveal-on-scroll">{siteConfig.about.history.text2}</p>
 				</div>
-				<div class="about-image">
+				<div class="about-image reveal-on-scroll">
 					<Image 
-						src={coachesImage} 
-						alt="Nuestros entrenadores profesionales" 
+						src={coachs1} 
+						alt="Historia de Iron Pulse Gym" 
+						width={800} 
+						height={600} 
+						loading="lazy" 
+					/>
+				</div>
+			</div>
+		</section>
+
+		<section id="mision" class="mission reveal-on-scroll">
+			<div class="mission-content">
+				<div class="mission-text reveal-on-scroll">
+					<h2>{siteConfig.about.mission.title}</h2>
+					<p>{siteConfig.about.mission.text}</p>
+				</div>
+				<div class="mission-image reveal-on-scroll">
+					<Image 
+						src={gym12} 
+						alt="Misión de Iron Pulse Gym" 
 						width={800} 
 						height={600} 
 						loading="lazy" 
@@ -91,7 +108,7 @@ const serviceImages = {
 		</section>
 
 		<section id="servicios" class="services reveal-on-scroll">
-			<h2>Nuestros Servicios</h2>
+			<h2 class="reveal-on-scroll">Nuestros Servicios</h2>
 			<div class="services-grid">
 				{siteConfig.services.map((service) => (
 					<article class="service-card reveal-on-scroll" id={service.id}>
@@ -99,7 +116,8 @@ const serviceImages = {
 							src={serviceImages[service.image as keyof typeof serviceImages]} 
 							alt={service.title}
 							width={600}
-							height={600}
+							height={450}
+							loading="lazy"
 							class="service-card-image"
 						/>
 						<div class="service-card-overlay">
@@ -111,17 +129,17 @@ const serviceImages = {
 			</div>
 		</section>
 
-		<section class="info reveal-on-scroll">
-			<h2>Información</h2>
-			<div class="info-content">
-				<div class="info-item">
+		<section id="sucursal" class="sucursal reveal-on-scroll">
+			<h2 class="reveal-on-scroll">Información de Sucursal</h2>
+			<div class="sucursal-content">
+				<div class="sucursal-item reveal-on-scroll">
 					<h3>Horarios</h3>
 					<p>{siteConfig.contact.businessHours}</p>
 				</div>
-				<div class="info-item">
+				<div class="sucursal-item reveal-on-scroll">
 					<h3>Ubicación</h3>
 					<p>{siteConfig.contact.address}</p>
-					<a href={siteConfig.contact.googleMapsLink} target="_blank" rel="noopener noreferrer">
+					<a href={siteConfig.contact.googleMapsLink} target="_blank" rel="noopener noreferrer" class="premium-button">
 						Ver en Google Maps
 					</a>
 				</div>
@@ -133,26 +151,6 @@ const serviceImages = {
 		<p>&copy; 2026 Copyright {siteConfig.siteName}. Todos los derechos reservados./Desarrollado por consultoria Lanfranco</p>
 	</footer>
 </Layout>
-
-<script>
-	const observerOptions = {
-		root: null,
-		rootMargin: '0px',
-		threshold: 0.1
-	};
-
-	const observer = new IntersectionObserver((entries) => {
-		entries.forEach((entry) => {
-			if (entry.isIntersecting) {
-				entry.target.classList.add('is-visible');
-			}
-		});
-	}, observerOptions);
-
-	document.querySelectorAll('.reveal-on-scroll').forEach((element) => {
-		observer.observe(element);
-	});
-</script>
 
 <style>
 	nav {
@@ -169,6 +167,25 @@ const serviceImages = {
 		margin: 0;
 	}
 
+	.nav-links {
+		display: flex;
+		gap: 2rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.nav-links a {
+		color: var(--color-background);
+		text-decoration: none;
+		font-weight: 500;
+		transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.nav-links a:hover {
+		opacity: 0.8;
+	}
+
 	.hero {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -177,6 +194,8 @@ const serviceImages = {
 		max-width: 1400px;
 		margin: 0 auto;
 		align-items: center;
+		background: linear-gradient(135deg, rgba(18, 18, 18, 0.95), rgba(18, 18, 18, 0.85));
+		border-radius: 1rem;
 	}
 
 	.hero-content h2 {
@@ -184,6 +203,7 @@ const serviceImages = {
 		font-weight: 700;
 		margin-bottom: 1.5rem;
 		line-height: 1.2;
+		color: var(--color-background);
 	}
 
 	.hero-content p {
@@ -252,7 +272,6 @@ const serviceImages = {
 		padding: 6rem 2rem;
 		max-width: 1400px;
 		margin: 0 auto;
-		background-color: rgba(255, 255, 255, 0.03);
 	}
 
 	.about-content {
@@ -262,11 +281,19 @@ const serviceImages = {
 		align-items: center;
 	}
 
+	.about-text .subtitle {
+		font-size: 1.125rem;
+		font-style: italic;
+		color: var(--color-accent);
+		margin-bottom: 1rem;
+	}
+
 	.about-text h2 {
 		font-size: 2.5rem;
 		font-weight: 700;
 		margin-bottom: 2rem;
-		color: var(--color-accent);
+		color: var(--color-background);
+		letter-spacing: 0.05em;
 	}
 
 	.about-text p {
@@ -280,7 +307,7 @@ const serviceImages = {
 	.about-image {
 		aspect-ratio: 4/3;
 		overflow: hidden;
-		border-radius: 1rem;
+		border-radius: 1.5rem;
 		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
@@ -289,6 +316,52 @@ const serviceImages = {
 	}
 
 	.about-image img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.mission {
+		padding: 6rem 2rem;
+		max-width: 1400px;
+		margin: 0 auto;
+		background-color: var(--color-accent);
+		border-radius: 1rem;
+	}
+
+	.mission-content {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 4rem;
+		align-items: center;
+	}
+
+	.mission-text h2 {
+		font-size: 2.5rem;
+		font-weight: 700;
+		margin-bottom: 2rem;
+		color: var(--color-primary);
+	}
+
+	.mission-text p {
+		font-size: 1.125rem;
+		line-height: 1.8;
+		margin-bottom: 1.5rem;
+		color: var(--color-primary);
+	}
+
+	.mission-image {
+		aspect-ratio: 4/3;
+		overflow: hidden;
+		border-radius: 1.5rem;
+		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.mission-image:hover {
+		transform: scale(1.02);
+	}
+
+	.mission-image img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
@@ -305,6 +378,7 @@ const serviceImages = {
 		font-weight: 700;
 		margin-bottom: 3rem;
 		text-align: center;
+		color: var(--color-background);
 	}
 
 	.services-grid {
@@ -315,15 +389,14 @@ const serviceImages = {
 
 	.service-card {
 		position: relative;
-		border-radius: 0.75rem;
-		aspect-ratio: 1/1;
+		border-radius: 1.5rem;
+		aspect-ratio: 4/3;
 		overflow: hidden;
-		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.service-card:hover {
-		transform: scale(1.03);
-		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+		transform: scale(1.05);
 	}
 
 	.service-card-image {
@@ -333,6 +406,11 @@ const serviceImages = {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.service-card:hover .service-card-image {
+		transform: scale(1.05);
 	}
 
 	.service-card-overlay {
@@ -341,7 +419,7 @@ const serviceImages = {
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4), transparent);
+		background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4), transparent);
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
@@ -360,36 +438,59 @@ const serviceImages = {
 		line-height: 1.6;
 	}
 
-	.info {
+	.sucursal {
 		padding: 6rem 2rem;
 		max-width: 1400px;
 		margin: 0 auto;
 	}
 
-	.info h2 {
+	.sucursal h2 {
 		font-size: 2.5rem;
 		font-weight: 700;
 		margin-bottom: 3rem;
 		text-align: center;
+		color: var(--color-background);
 	}
 
-	.info-content {
+	.sucursal-content {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 		gap: 3rem;
 	}
 
-	.info-item h3 {
+	.sucursal-item h3 {
 		font-size: 1.25rem;
 		font-weight: 600;
 		margin-bottom: 1rem;
 		color: var(--color-accent);
 	}
 
-	.info-item p {
-		margin-bottom: 1rem;
+	.sucursal-item p {
+		margin-bottom: 1.5rem;
 		color: var(--color-background);
 		opacity: 0.9;
+	}
+
+	.premium-button {
+		display: inline-block;
+		background-color: var(--color-accent);
+		color: var(--color-primary);
+		padding: 1rem 2rem;
+		font-weight: 600;
+		border-radius: 0.5rem;
+		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+		border: 2px solid transparent;
+	}
+
+	.premium-button:hover {
+		opacity: 0.9;
+		transform: scale(1.03);
+		box-shadow: 0 4px 12px rgba(255, 159, 28, 0.3);
+		border-color: rgba(255, 159, 28, 0.5);
+	}
+
+	.premium-button:active {
+		transform: scale(0.98);
 	}
 
 	footer {
@@ -405,6 +506,17 @@ const serviceImages = {
 	}
 
 	@media (max-width: 768px) {
+		nav {
+			flex-direction: column;
+			gap: 1rem;
+		}
+
+		.nav-links {
+			gap: 1rem;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+
 		.hero {
 			grid-template-columns: 1fr;
 			padding: 4rem 1.5rem;
@@ -419,26 +531,21 @@ const serviceImages = {
 			grid-template-columns: 1fr;
 		}
 
-		.about {
+		.about,
+		.mission,
+		.sucursal {
 			padding: 4rem 1.5rem;
 		}
 
-		.about-content {
+		.about-content,
+		.mission-content {
 			grid-template-columns: 1fr;
 			gap: 2rem;
 		}
 
-		.about-text h2 {
-			font-size: 2rem;
-		}
-
-		.services,
-		.info {
-			padding: 4rem 1.5rem;
-		}
-
-		.services h2,
-		.info h2 {
+		.about-text h2,
+		.mission-text h2,
+		.sucursal h2 {
 			font-size: 2rem;
 		}
 
