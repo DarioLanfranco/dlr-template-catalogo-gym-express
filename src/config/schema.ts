@@ -48,6 +48,28 @@ const socialSchema = z.object({
   twitter: z.string().url().optional(),
 });
 
+// History schema
+const historySchema = z.object({
+  title: z.string().min(1, 'History title cannot be empty'),
+  subtitle: z.string().min(1, 'History subtitle cannot be empty'),
+  text1: z.string().min(1, 'History text1 cannot be empty'),
+  text2: z.string().min(1, 'History text2 cannot be empty'),
+  image: z.string().min(1, 'History image cannot be empty'),
+});
+
+// Mission schema
+const missionSchema = z.object({
+  title: z.string().min(1, 'Mission title cannot be empty'),
+  text: z.string().min(1, 'Mission text cannot be empty'),
+  image: z.string().min(1, 'Mission image cannot be empty'),
+});
+
+// About schema
+const aboutSchema = z.object({
+  history: historySchema,
+  mission: missionSchema,
+});
+
 // Main client config schema for raw input validation
 export const clientConfigSchema = z.object({
   siteName: z.string().min(1, 'Site name cannot be empty'),
@@ -57,6 +79,7 @@ export const clientConfigSchema = z.object({
   contact: contactSchema,
   social: socialSchema,
   services: z.array(serviceSchema).min(0, 'Services array is required'),
+  about: aboutSchema,
 });
 
 export type ClientConfigInput = z.infer<typeof clientConfigSchema>;
