@@ -1,0 +1,118 @@
+---
+import { Image } from 'astro:assets';
+import logoIronPulse from '../assets/brand/logo-ironpulse.png';
+import { siteConfig } from '../config/site-config';
+---
+<nav class="navbar">
+	<a href="/" class="navbar-logo">
+		<Image 
+			src={logoIronPulse} 
+			alt="Iron Pulse Gym Logo" 
+			loading="eager" 
+			format="webp"
+			width={400}
+			height={200}
+		/>
+	</a>
+	<ul class="nav-links">
+		<li><a href="#inicio">Inicio</a></li>
+		<li><a href="#conocenos">Conócenos</a></li>
+		<li><a href="#servicios">Servicios</a></li>
+		<li><a href="#sucursal">Sucursal</a></li>
+	</ul>
+</nav>
+
+<style>
+    .navbar {
+        padding: 0 4rem;
+        display: flex;
+        justify-content: flex-end; /* Empuja el menú "Inicio, Conócenos..." a la derecha */
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: #121212;
+        
+        /* Achicamos el alto del Navbar para que la franja negra superior 
+           sea delgada y elegante, tal como se veía en tu bosquejo. */
+        height: 150px; 
+        position: relative; /* Obligatorio para que sirva de ancla al logo absoluto */
+    }
+
+    .navbar-logo {
+        position: absolute; /* Lo despega del menú para que flote libre */
+        left: 0rem;        /* Lo alinea con el mismo margen izquierdo del contenedor */
+        
+        /* 
+           Lo empuja hacia abajo. Con un valor entre 45px y 50px se va a clavar 
+           exactamente centrado sobre el espacio vacío arriba de tu título. */
+        top: 70px;          
+        
+        display: flex;
+        align-items: center;
+        z-index: 50;        /* Asegura que el logo flote por encima de cualquier elemento */
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .navbar-logo:hover {
+        transform: scale(1.02);
+    }
+
+  .navbar-logo img {
+        /* 
+           En el montaje tenía casi 600px. Bajándolo a un rango de 260px - 280px 
+           conseguís que luzca GRANDE y con autoridad, pero súper armonioso y nítido. */
+        width: 670px;  
+        height: auto;
+        display: block;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 3rem; /* Espaciado elegante entre opciones */
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+        height: 100%; /* Se alinea en el centro exacto junto al logo */
+    }
+
+    .nav-links a {
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: 0.1em; /* Estética deportiva Cyberpunk muy marcada */
+        text-transform: uppercase; 
+        transition: color 0.2s ease;
+    }
+
+    /* Hover con tu naranja de acción oficial */
+    .nav-links a:hover {
+        color: #FF9F1C; 
+    }
+
+    /* 📱 RESPONSIVO: MOBILE (Para que en celulares siga viéndose impecable) */
+    @media (max-width: 900px) {
+        .navbar {
+            flex-direction: column;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 2rem 1rem;
+            height: auto; /* En mobile el alto se adapta libremente */
+        }
+
+        .navbar-logo img {
+            width: 220px; /* Tamaño adaptado para pantallas de teléfonos */
+        }
+
+        .nav-links {
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .nav-links a {
+            font-size: 0.85rem;
+        }
+    }
+</style>

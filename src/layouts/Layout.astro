@@ -2,6 +2,7 @@
 import { siteConfig } from '../config/site-config';
 import '../styles/global.css';
 import WhatsAppButton from '../components/common/WhatsAppButton.astro';
+import Navbar from '../components/Navbar.astro';
 
 interface Props {
 	title: string;
@@ -37,7 +38,7 @@ const { title, description = siteConfig.description } = Astro.props;
 	</head>
 	<body>
 		<header>
-			<slot name="header" />
+			<Navbar />
 		</header>
 		<main>
 			<slot />
