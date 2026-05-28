@@ -19,18 +19,6 @@ const serviceImages = {
 ---
 
 <Layout title={siteConfig.siteName}>
-	<header slot="header">
-		<nav>
-			<h1>{siteConfig.siteName}</h1>
-			<ul class="nav-links">
-				<li><a href="#inicio">Inicio</a></li>
-				<li><a href="#conocenos">Conócenos</a></li>
-				<li><a href="#servicios">Servicios</a></li>
-				<li><a href="#sucursal">Sucursal</a></li>
-			</ul>
-		</nav>
-	</header>
-
 	<main>
 		<section id="inicio" class="hero reveal-on-scroll">
 			<div class="hero-content">
@@ -159,39 +147,6 @@ const serviceImages = {
 </Layout>
 
 <style>
-	nav {
-		padding: 1.5rem 2rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	nav h1 {
-		color: var(--color-accent);
-		font-size: 1.5rem;
-		font-weight: 700;
-		margin: 0;
-	}
-
-	.nav-links {
-		display: flex;
-		gap: 2rem;
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-
-	.nav-links a {
-		color: var(--color-background);
-		text-decoration: none;
-		font-weight: 500;
-		transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-	}
-
-	.nav-links a:hover {
-		opacity: 0.8;
-	}
-
 	.hero {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
