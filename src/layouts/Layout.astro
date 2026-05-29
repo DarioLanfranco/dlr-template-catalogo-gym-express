@@ -34,6 +34,10 @@ const { title, description = siteConfig.description } = Astro.props;
 			html {
 				scroll-behavior: smooth;
 			}
+
+			body.nav-open {
+				overflow: hidden;
+			}
 		</style>
 	</head>
 	<body>
@@ -66,6 +70,25 @@ const { title, description = siteConfig.description } = Astro.props;
 			document.querySelectorAll('.reveal-on-scroll').forEach((element) => {
 				observer.observe(element);
 			});
+
+			// Active nav link tracking
+			const sections = document.querySelectorAll('section[id]');
+			const navLinks = document.querySelectorAll('.nav-links a');
+
+			if (sections.length && navLinks.length) {
+				const sectionObserver = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							navLinks.forEach((link) => {
+								const isActive = link.getAttribute('href') === `#${entry.target.id}`;
+								link.classList.toggle('active', isActive);
+							});
+						}
+					});
+				}, { threshold: 0.3 });
+
+				sections.forEach((section) => sectionObserver.observe(section));
+			}
 		</script>
 	</body>
 </html>
