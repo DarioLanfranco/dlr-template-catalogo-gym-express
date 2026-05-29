@@ -3,27 +3,31 @@ import { Image } from "astro:assets";
 import logoIronPulse from "../assets/brand/logo-ironpulse.png";
 ---
 
-<nav class="navbar">
+<nav class="navbar" aria-label="Navegación principal">
   <a href="/" class="navbar-logo">
     <Image
       src={logoIronPulse}
-      alt="Iron Pulse Gym Logo"
+      alt="Iron Pulse Gym"
       loading="eager"
       format="webp"
-      width={1100}
-      height={1000}
+      width={600}
+      height={557}
+      widths={[150, 330, 600]}
+      sizes="(max-width: 900px) 150px, 330px"
     />
   </a>
   <button
     class="hamburger-menu"
-    aria-label="Abrir menú de opciones"
+    id="hamburger-menu"
+    aria-controls="nav-links"
     aria-expanded="false"
+    aria-label="Abrir menú de navegación"
   >
-    <span></span>
-    <span></span>
-    <span></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
   </button>
-  <ul id="nav-links" class="nav-links">
+  <ul id="nav-links" class="nav-links" role="list">
     <li><a href="#inicio">Inicio</a></li>
     <li><a href="#conocenos">Conócenos</a></li>
     <li><a href="#servicios">Servicios</a></li>
@@ -32,45 +36,111 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.png";
 </nav>
 
 <script>
-  const hamburgerButton = document.querySelector(".hamburger-menu");
+  const hamburgerButton = document.getElementById("hamburger-menu");
   const navLinks = document.getElementById("nav-links");
+  const body = document.body;
+
+  function isMenuOpen() {
+    return hamburgerButton?.getAttribute("aria-expanded") === "true";
+  }
+
+  function openMenu() {
+    hamburgerButton?.classList.add("is-open");
+    navLinks?.classList.add("is-open");
+    hamburgerButton?.setAttribute("aria-expanded", "true");
+    hamburgerButton?.setAttribute("aria-label", "Cerrar menú de navegación");
+    body.classList.add("nav-open");
+
+    // Focus first link
+    const firstLink = navLinks?.querySelector("a");
+    if (firstLink) {
+      firstLink.focus({ preventScroll: true });
+    }
+  }
+
+  function closeMenu() {
+    hamburgerButton?.classList.remove("is-open");
+    navLinks?.classList.remove("is-open");
+    hamburgerButton?.setAttribute("aria-expanded", "false");
+    hamburgerButton?.setAttribute("aria-label", "Abrir menú de navegación");
+    body.classList.remove("nav-open");
+
+    // Return focus to hamburger button
+    hamburgerButton?.focus({ preventScroll: true });
+  }
+
+  function toggleMenu() {
+    if (isMenuOpen()) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  }
 
   if (hamburgerButton && navLinks) {
-    hamburgerButton.addEventListener("click", () => {
-      const isOpen = hamburgerButton.classList.toggle("is-open");
-      navLinks.classList.toggle("is-open");
-      hamburgerButton.setAttribute("aria-expanded", isOpen.toString());
-    });
+    hamburgerButton.addEventListener("click", toggleMenu);
 
     // Close menu when clicking on any link
     const links = navLinks.querySelectorAll("a");
     links.forEach((link) => {
-      link.addEventListener("click", () => {
-        hamburgerButton.classList.remove("is-open");
-        navLinks.classList.remove("is-open");
-        hamburgerButton.setAttribute("aria-expanded", "false");
-      });
+      link.addEventListener("click", closeMenu);
+    });
+
+    // Close on Escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && isMenuOpen()) {
+        closeMenu();
+      }
+    });
+
+    // Close on click outside
+    document.addEventListener("click", (e) => {
+      const target = e.target as Node;
+
+      if (
+        isMenuOpen() &&
+        !navLinks.contains(target) &&
+        !hamburgerButton.contains(target)
+      ) {
+        closeMenu();
+      }
+    });
+
+    // Trap focus within mobile menu
+    navLinks.addEventListener("keydown", (e) => {
+      if (e.key === "Tab" && isMenuOpen()) {
+        const focusable = navLinks.querySelectorAll<HTMLElement>(
+          'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
     });
   }
 </script>
 
 <style>
   .navbar {
-    padding: 0 4rem;
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 3rem 4rem 0;
     width: 100%;
     box-sizing: border-box;
-    background-color: #121212;
-    height: 90px;
+    background-color: var(--color-primary);
+    min-height: 90px;
     position: relative;
   }
 
   .navbar-logo {
-    position: absolute;
-    left: 12rem;
-    top: 3rem;
     display: flex;
     align-items: center;
     z-index: 50;
@@ -83,10 +153,8 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.png";
 
   .navbar-logo img {
     width: 330px;
-    height: auto;
+    aspect-ratio: 600 / 557;
     display: block;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
   }
 
   .hamburger-menu {
@@ -102,6 +170,12 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.png";
     z-index: 60;
   }
 
+  .hamburger-menu:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+
   .hamburger-menu span {
     width: 30px;
     height: 3px;
@@ -113,7 +187,7 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.png";
 
   .hamburger-menu.is-open span:nth-child(1) {
     transform: rotate(45deg) translate(8px, 8px);
-    background: #ff9f1c;
+    background: var(--color-accent);
   }
 
   .hamburger-menu.is-open span:nth-child(2) {
@@ -122,7 +196,7 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.png";
 
   .hamburger-menu.is-open span:nth-child(3) {
     transform: rotate(-45deg) translate(7px, -7px);
-    background: #ff9f1c;
+    background: var(--color-accent);
   }
 
   .nav-links {
@@ -133,6 +207,7 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.png";
     padding: 0;
     align-items: center;
     height: 100%;
+    padding-top: 0.5rem;
   }
 
   .nav-links a {
@@ -143,22 +218,39 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.png";
     letter-spacing: 0.1em;
     text-transform: uppercase;
     transition: color 0.2s ease;
+    position: relative;
   }
 
-  .nav-links a:hover {
-    color: #ff9f1c;
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .nav-links a:hover,
+  .nav-links a:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .nav-links a:hover::after,
+  .nav-links a:focus-visible::after,
+  .nav-links a.active::after {
+    transform: scaleX(1);
+  }
+
+  .nav-links a.active {
+    color: var(--color-accent);
   }
 
   @media (min-width: 901px) and (max-width: 1200px) {
     .navbar-logo img {
       width: 150px;
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: crisp-edges;
-    }
-
-    .navbar-logo {
-      top: 40px;
-      left: 8rem;
     }
   }
 
@@ -166,21 +258,17 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.png";
     .navbar {
       flex-direction: row;
       justify-content: space-between;
+      align-items: center;
       padding: 1rem 1.5rem;
-      height: auto;
       min-height: 80px;
     }
 
     .navbar-logo {
-      position: relative;
-      left: 2.5rem;
-      top: 0;
+      padding-left: 0;
     }
 
     .navbar-logo img {
       width: 150px;
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: crisp-edges;
     }
 
     .hamburger-menu {
@@ -207,6 +295,7 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.png";
       z-index: 40;
       height: auto;
       align-items: stretch;
+      padding-top: 1.5rem;
     }
 
     .nav-links.is-open {
@@ -225,9 +314,18 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.png";
       text-align: center;
     }
 
-    .nav-links a:hover {
+    .nav-links a::after {
+      display: none;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
       background-color: rgba(255, 159, 28, 0.1);
-      color: #ff9f1c;
+      color: var(--color-accent);
+    }
+
+    .nav-links a.active {
+      background-color: rgba(255, 159, 28, 0.1);
     }
   }
 </style>
