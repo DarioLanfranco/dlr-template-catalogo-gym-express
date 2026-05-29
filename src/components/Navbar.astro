@@ -1,118 +1,233 @@
 ---
-import { Image } from 'astro:assets';
-import logoIronPulse from '../assets/brand/logo-ironpulse.png';
-import { siteConfig } from '../config/site-config';
+import { Image } from "astro:assets";
+import logoIronPulse from "../assets/brand/logo-ironpulse.png";
 ---
+
 <nav class="navbar">
-	<a href="/" class="navbar-logo">
-		<Image 
-			src={logoIronPulse} 
-			alt="Iron Pulse Gym Logo" 
-			loading="eager" 
-			format="webp"
-			width={400}
-			height={200}
-		/>
-	</a>
-	<ul class="nav-links">
-		<li><a href="#inicio">Inicio</a></li>
-		<li><a href="#conocenos">Conócenos</a></li>
-		<li><a href="#servicios">Servicios</a></li>
-		<li><a href="#sucursal">Sucursal</a></li>
-	</ul>
+  <a href="/" class="navbar-logo">
+    <Image
+      src={logoIronPulse}
+      alt="Iron Pulse Gym Logo"
+      loading="eager"
+      format="webp"
+      width={1100}
+      height={1000}
+    />
+  </a>
+  <button
+    class="hamburger-menu"
+    aria-label="Abrir menú de opciones"
+    aria-expanded="false"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <ul id="nav-links" class="nav-links">
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#conocenos">Conócenos</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#sucursal">Sucursal</a></li>
+  </ul>
 </nav>
 
+<script>
+  const hamburgerButton = document.querySelector(".hamburger-menu");
+  const navLinks = document.getElementById("nav-links");
+
+  if (hamburgerButton && navLinks) {
+    hamburgerButton.addEventListener("click", () => {
+      const isOpen = hamburgerButton.classList.toggle("is-open");
+      navLinks.classList.toggle("is-open");
+      hamburgerButton.setAttribute("aria-expanded", isOpen.toString());
+    });
+
+    // Close menu when clicking on any link
+    const links = navLinks.querySelectorAll("a");
+    links.forEach((link) => {
+      link.addEventListener("click", () => {
+        hamburgerButton.classList.remove("is-open");
+        navLinks.classList.remove("is-open");
+        hamburgerButton.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+</script>
+
 <style>
-    .navbar {
-        padding: 0 4rem;
-        display: flex;
-        justify-content: flex-end; /* Empuja el menú "Inicio, Conócenos..." a la derecha */
-        align-items: center;
-        width: 100%;
-        box-sizing: border-box;
-        background-color: #121212;
-        
-        /* Achicamos el alto del Navbar para que la franja negra superior 
-           sea delgada y elegante, tal como se veía en tu bosquejo. */
-        height: 150px; 
-        position: relative; /* Obligatorio para que sirva de ancla al logo absoluto */
+  .navbar {
+    padding: 0 4rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #121212;
+    height: 90px;
+    position: relative;
+  }
+
+  .navbar-logo {
+    position: absolute;
+    left: 12rem;
+    top: 3rem;
+    display: flex;
+    align-items: center;
+    z-index: 50;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .navbar-logo:hover {
+    transform: scale(1.02);
+  }
+
+  .navbar-logo img {
+    width: 330px;
+    height: auto;
+    display: block;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  .hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 60;
+  }
+
+  .hamburger-menu span {
+    width: 30px;
+    height: 3px;
+    background: #ffffff;
+    border-radius: 10px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+  }
+
+  .hamburger-menu.is-open span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+    background: #ff9f1c;
+  }
+
+  .hamburger-menu.is-open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger-menu.is-open span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+    background: #ff9f1c;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 3rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    height: 100%;
+  }
+
+  .nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+  }
+
+  .nav-links a:hover {
+    color: #ff9f1c;
+  }
+
+  @media (min-width: 901px) and (max-width: 1200px) {
+    .navbar-logo img {
+      width: 150px;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
     }
 
     .navbar-logo {
-        position: absolute; /* Lo despega del menú para que flote libre */
-        left: 0rem;        /* Lo alinea con el mismo margen izquierdo del contenedor */
-        
-        /* 
-           Lo empuja hacia abajo. Con un valor entre 45px y 50px se va a clavar 
-           exactamente centrado sobre el espacio vacío arriba de tu título. */
-        top: 70px;          
-        
-        display: flex;
-        align-items: center;
-        z-index: 50;        /* Asegura que el logo flote por encima de cualquier elemento */
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      top: 40px;
+      left: 8rem;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .navbar {
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      height: auto;
+      min-height: 80px;
     }
 
-    .navbar-logo:hover {
-        transform: scale(1.02);
+    .navbar-logo {
+      position: relative;
+      left: 2.5rem;
+      top: 0;
     }
 
-  .navbar-logo img {
-        /* 
-           En el montaje tenía casi 600px. Bajándolo a un rango de 260px - 280px 
-           conseguís que luzca GRANDE y con autoridad, pero súper armonioso y nítido. */
-        width: 670px;  
-        height: auto;
-        display: block;
+    .navbar-logo img {
+      width: 150px;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+    }
+
+    .hamburger-menu {
+      display: flex;
     }
 
     .nav-links {
-        display: flex;
-        gap: 3rem; /* Espaciado elegante entre opciones */
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        align-items: center;
-        height: 100%; /* Se alinea en el centro exacto junto al logo */
+      position: absolute;
+      top: 100%;
+      right: 1.5rem;
+      width: 200px;
+      flex-direction: column;
+      background-color: #1a1a1a;
+      padding: 1.5rem;
+      gap: 1rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(255, 159, 28, 0.2);
+      transform: scale(0.95);
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 40;
+      height: auto;
+      align-items: stretch;
+    }
+
+    .nav-links.is-open {
+      transform: scale(1);
+      opacity: 1;
+      pointer-events: auto;
     }
 
     .nav-links a {
-        color: #ffffff;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 0.95rem;
-        letter-spacing: 0.1em; /* Estética deportiva Cyberpunk muy marcada */
-        text-transform: uppercase; 
-        transition: color 0.2s ease;
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+      text-align: center;
     }
 
-    /* Hover con tu naranja de acción oficial */
     .nav-links a:hover {
-        color: #FF9F1C; 
+      background-color: rgba(255, 159, 28, 0.1);
+      color: #ff9f1c;
     }
-
-    /* 📱 RESPONSIVO: MOBILE (Para que en celulares siga viéndose impecable) */
-    @media (max-width: 900px) {
-        .navbar {
-            flex-direction: column;
-            justify-content: center;
-            gap: 1.5rem;
-            padding: 2rem 1rem;
-            height: auto; /* En mobile el alto se adapta libremente */
-        }
-
-        .navbar-logo img {
-            width: 220px; /* Tamaño adaptado para pantallas de teléfonos */
-        }
-
-        .nav-links {
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .nav-links a {
-            font-size: 0.85rem;
-        }
-    }
+  }
 </style>
