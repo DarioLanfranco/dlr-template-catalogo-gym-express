@@ -48,7 +48,7 @@ const serviceImages = {
             alt="Training equipment"
             width={400}
             height={300}
-            loading="eager"
+            loading="lazy"
           />
         </div>
         <div class="hero-image hero-image-tertiary">
@@ -60,7 +60,7 @@ const serviceImages = {
             widths={[400, 728, 800]}
             format="webp"
             quality={75}
-            loading="eager"
+            loading="lazy"
           />
         </div>
       </div>
@@ -602,17 +602,6 @@ const serviceImages = {
     }
 
     @media (max-width: 768px) {
-      nav {
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .nav-links {
-        gap: 1rem;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-
       .hero {
         grid-template-columns: 1fr;
         padding: 4rem 1.5rem;
