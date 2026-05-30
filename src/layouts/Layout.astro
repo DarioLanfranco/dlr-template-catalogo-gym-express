@@ -10,6 +10,7 @@ interface Props {
 }
 
 const { title, description = siteConfig.description } = Astro.props;
+const siteUrl = Astro.site ?? new URL("https://ironpulsegym.com");
 ---
 
 <!doctype html>
@@ -20,11 +21,13 @@ const { title, description = siteConfig.description } = Astro.props;
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
 
+    <link rel="canonical" href={new URL(Astro.url.pathname, siteUrl).href} />
+
     <!-- OpenGraph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="/og-image.png" />
-    <meta property="og:url" content="https://ironpulsegym.com" />
+    <meta property="og:image" content={new URL("/og-image.png", siteUrl).href} />
+    <meta property="og:url" content={new URL(Astro.url.pathname, siteUrl).href} />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:type" content="website" />
 
@@ -50,9 +53,7 @@ const { title, description = siteConfig.description } = Astro.props;
     <main>
       <slot />
     </main>
-    <footer>
-      <slot name="footer" />
-    </footer>
+    <slot name="footer" />
     <WhatsAppButton />
 
     <script>
@@ -74,28 +75,38 @@ const { title, description = siteConfig.description } = Astro.props;
         observer.observe(element);
       });
 
-      // Active nav link tracking
+      const sectionObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const navLinks = document.querySelectorAll<HTMLAnchorElement>(
+                ".nav-links a",
+              );
+              navLinks.forEach((link) => {
+                const isActive =
+                  link.getAttribute("href") === `#${entry.target.id}`;
+                link.classList.toggle("active", isActive);
+              });
+            }
+          });
+        },
+        { threshold: 0.3 },
+      );
+
       const sections = document.querySelectorAll("section[id]");
-      const navLinks = document.querySelectorAll(".nav-links a");
-
-      if (sections.length && navLinks.length) {
-        const sectionObserver = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                navLinks.forEach((link) => {
-                  const isActive =
-                    link.getAttribute("href") === `#${entry.target.id}`;
-                  link.classList.toggle("active", isActive);
-                });
-              }
-            });
-          },
-          { threshold: 0.3 },
-        );
-
+      if (sections.length) {
         sections.forEach((section) => sectionObserver.observe(section));
       }
+
+      function cleanup() {
+        observer.disconnect();
+        sectionObserver.disconnect();
+        document.removeEventListener("astro:before-swap", cleanup);
+        window.removeEventListener("beforeunload", cleanup);
+      }
+
+      document.addEventListener("astro:before-swap", cleanup);
+      window.addEventListener("beforeunload", cleanup);
     </script>
   </body>
 </html>

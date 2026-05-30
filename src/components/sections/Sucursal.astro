@@ -1,0 +1,200 @@
+---
+import { siteConfig } from "../../config/site-config";
+import facebookIcon from "../../assets/brand/icons/facebook.svg";
+import instagramIcon from "../../assets/brand/icons/instagram.svg";
+import xIcon from "../../assets/brand/icons/x.svg";
+---
+
+<section id="sucursal" class="sucursal reveal-on-scroll">
+  <h2 class="reveal-on-scroll">Información de Sucursal</h2>
+  <div class="sucursal-content">
+    <div class="sucursal-item reveal-on-scroll">
+      <h3>Horarios</h3>
+      <p>{siteConfig.contact.businessHours}</p>
+    </div>
+    <div class="sucursal-item reveal-on-scroll">
+      <h3>Ubicación</h3>
+      <p>{siteConfig.contact.address}</p>
+      <a
+        href={siteConfig.contact.googleMapsLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="premium-button"
+      >
+        Ver en Google Maps
+      </a>
+    </div>
+    <div class="sucursal-item reveal-on-scroll">
+      <h3>Redes Sociales</h3>
+      <div class="redes-content">
+        <a
+          href="https://facebook.com/test"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="redes-link"
+          aria-label="Facebook"
+        >
+          <img
+            src={facebookIcon.src}
+            alt="Facebook"
+            width="48"
+            height="48"
+            loading="lazy"
+          />
+        </a>
+        <a
+          href="https://instagram.com/test"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="redes-link"
+          aria-label="Instagram"
+        >
+          <img
+            src={instagramIcon.src}
+            alt="Instagram"
+            width="48"
+            height="48"
+            loading="lazy"
+          />
+        </a>
+        <a
+          href="https://x.com/test"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="redes-link"
+          aria-label="X"
+        >
+          <img
+            src={xIcon.src}
+            alt="X"
+            width="48"
+            height="48"
+            loading="lazy"
+          />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sucursal {
+    padding: 6rem 2rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .sucursal h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    text-align: center;
+    color: var(--color-background);
+  }
+
+  .sucursal-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2.5rem;
+  }
+
+  .sucursal-item {
+    text-align: center;
+    flex: 0 1 280px;
+  }
+
+  .sucursal-item h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--color-accent);
+  }
+
+  .sucursal-item p {
+    margin-bottom: 1.5rem;
+    color: var(--color-background);
+    opacity: 0.9;
+  }
+
+  .premium-button {
+    display: inline-block;
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+    padding: 1rem 2rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition:
+      transform 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1)),
+      opacity 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1)),
+      box-shadow 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
+    border: 2px solid transparent;
+  }
+
+  .premium-button:hover {
+    opacity: 0.9;
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(255, 159, 28, 0.3);
+    border-color: rgba(255, 159, 28, 0.5);
+  }
+
+  .premium-button:active {
+    transform: scale(0.98);
+  }
+
+  .redes-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .redes-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    transition:
+      transform 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1)),
+      opacity 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
+    border-radius: 0.5rem;
+  }
+
+  .redes-link:hover {
+    transform: scale(1.1);
+    opacity: 0.85;
+  }
+
+  .redes-link:focus-visible {
+    outline: 2px solid #ff9f1c;
+    outline-offset: 4px;
+  }
+
+  .redes-link img {
+    width: 48px;
+    height: 48px;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .sucursal {
+      padding: 4rem 1.5rem 2rem;
+    }
+
+    .sucursal h2 {
+      font-size: 2rem;
+    }
+
+    .sucursal-content {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sucursal-item {
+      flex: none;
+    }
+  }
+</style>

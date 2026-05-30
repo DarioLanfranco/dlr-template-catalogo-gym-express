@@ -51,7 +51,6 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.webp";
     hamburgerButton?.setAttribute("aria-label", "Cerrar menú de navegación");
     body.classList.add("nav-open");
 
-    // Focus first link
     const firstLink = navLinks?.querySelector("a");
     if (firstLink) {
       firstLink.focus({ preventScroll: true });
@@ -65,7 +64,6 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.webp";
     hamburgerButton?.setAttribute("aria-label", "Abrir menú de navegación");
     body.classList.remove("nav-open");
 
-    // Return focus to hamburger button
     hamburgerButton?.focus({ preventScroll: true });
   }
 
@@ -77,59 +75,74 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.webp";
     }
   }
 
+  function handleEscape(e: KeyboardEvent) {
+    if (e.key === "Escape" && isMenuOpen()) {
+      closeMenu();
+    }
+  }
+
+  function handleClickOutside(e: MouseEvent) {
+    const target = e.target as Node;
+    if (
+      isMenuOpen() &&
+      !navLinks?.contains(target) &&
+      !hamburgerButton?.contains(target)
+    ) {
+      closeMenu();
+    }
+  }
+
+  function handleTabTrap(e: KeyboardEvent) {
+    if (e.key === "Tab" && isMenuOpen()) {
+      const focusable = navLinks?.querySelectorAll<HTMLElement>(
+        'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      if (!focusable || focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+      }
+    }
+  }
+
+  function cleanup() {
+    if (hamburgerButton) {
+      hamburgerButton.removeEventListener("click", toggleMenu);
+    }
+    document.removeEventListener("keydown", handleEscape);
+    document.removeEventListener("click", handleClickOutside);
+    if (navLinks) {
+      navLinks.querySelectorAll("a").forEach((link) => {
+        link.removeEventListener("click", closeMenu);
+      });
+      navLinks.removeEventListener("keydown", handleTabTrap);
+    }
+    document.removeEventListener("astro:before-swap", cleanup);
+  }
+
   if (hamburgerButton && navLinks) {
     hamburgerButton.addEventListener("click", toggleMenu);
 
-    // Close menu when clicking on any link
-    const links = navLinks.querySelectorAll("a");
-    links.forEach((link) => {
+    navLinks.querySelectorAll("a").forEach((link) => {
       link.addEventListener("click", closeMenu);
     });
 
-    // Close on Escape key
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && isMenuOpen()) {
-        closeMenu();
-      }
-    });
+    document.addEventListener("keydown", handleEscape);
+    document.addEventListener("click", handleClickOutside);
+    navLinks.addEventListener("keydown", handleTabTrap);
 
-    // Close on click outside
-    document.addEventListener("click", (e) => {
-      const target = e.target as Node;
-
-      if (
-        isMenuOpen() &&
-        !navLinks.contains(target) &&
-        !hamburgerButton.contains(target)
-      ) {
-        closeMenu();
-      }
-    });
-
-    // Trap focus within mobile menu
-    navLinks.addEventListener("keydown", (e) => {
-      if (e.key === "Tab" && isMenuOpen()) {
-        const focusable = navLinks.querySelectorAll<HTMLElement>(
-          'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])',
-        );
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last?.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first?.focus();
-        }
-      }
-    });
+    document.addEventListener("astro:before-swap", cleanup);
   }
 </script>
 
 <style>
   .navbar {
-    padding: 0 4rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -137,17 +150,14 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.webp";
     box-sizing: border-box;
     background-color: var(--color-primary);
     height: 90px;
-    position: relative;
+    padding: 0 4rem;
   }
 
   .navbar-logo {
-    display: flex;
-    align-items: center;
-    z-index: 50;
     will-change: transform;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-left: 4rem;
-    margin-top: 18rem;
+    transition: transform 0.3s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
+    margin-top: var(--logo-offset-y, 288px);
+    margin-left: var(--logo-offset-x, 4rem);
   }
 
   .navbar-logo:hover {
@@ -183,7 +193,7 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.webp";
     height: 3px;
     background: #ffffff;
     border-radius: 10px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
     transform-origin: center;
   }
 
@@ -232,7 +242,7 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.webp";
     height: 2px;
     background: var(--color-accent);
     transform: scaleX(0);
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
   }
 
   .nav-links a:hover,
@@ -250,24 +260,24 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.webp";
     color: var(--color-accent);
   }
 
-  @media (min-width: 901px) and (max-width: 1400px) {
+  /* Tablet (<= 1399px): overrides desktop default */
+  @media (max-width: 1399px) {
     .navbar-logo img {
       width: 150px;
     }
   }
 
-  @media (max-width: 900px) {
+  /* Mobile (<= 768px): overrides tablet */
+  @media (max-width: 768px) {
     .navbar {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
       padding: 0 2rem;
       min-height: 80px;
+      height: auto;
     }
 
     .navbar-logo {
-      margin-left: 5rem;
-      margin-top: 4rem;
+      --logo-offset-y: 64px;
+      --logo-offset-x: 5rem;
     }
 
     .navbar-logo img {
@@ -293,8 +303,8 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.webp";
       opacity: 0;
       pointer-events: none;
       transition:
-        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-        opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform 0.3s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1)),
+        opacity 0.3s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
       z-index: 40;
       height: auto;
       align-items: stretch;

@@ -1,0 +1,86 @@
+---
+import { siteConfig } from "../../config/site-config";
+import { Image } from "astro:assets";
+import gym12 from "../../assets/images/gym12.webp";
+---
+
+<section id="mision" class="mission reveal-on-scroll">
+  <div class="mission-content">
+    <div class="mission-text reveal-on-scroll">
+      <h2>{siteConfig.about.mission.title}</h2>
+      <p>{siteConfig.about.mission.text}</p>
+    </div>
+    <div class="mission-image reveal-on-scroll">
+      <Image
+        src={gym12}
+        alt="Misión de Iron Pulse Gym"
+        width={800}
+        height={600}
+        loading="lazy"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .mission {
+    padding: 6rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    background-color: var(--color-accent);
+    border-radius: 1rem;
+  }
+
+  .mission-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .mission-text h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--color-primary);
+  }
+
+  .mission-text p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    color: var(--color-primary);
+  }
+
+  .mission-image {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    transition: transform 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+
+  .mission-image:hover {
+    transform: scale(1.02);
+  }
+
+  .mission-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    .mission {
+      padding: 4rem 1.5rem;
+    }
+
+    .mission-content {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .mission-text h2 {
+      font-size: 2rem;
+    }
+  }
+</style>
