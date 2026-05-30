@@ -2,6 +2,30 @@ import type { UIConfig, Service } from './types';
 import type { ClientConfigInput } from './schema';
 
 /**
+ * ============================================================================
+ * ADAPTER PATTERN — DATA BOUNDARY LAYER
+ * ============================================================================
+ * DEUDA TÉCNICA / FUTURE-PROOFING:
+ *
+ * Este archivo actúa como un adaptador (Pattern Adapter) que sanitiza,
+ * normaliza y transforma datos externos (hoy un archivo local, mañana un
+ * CMS headless como Strapi o Sanity, o una API REST) antes de inyectarlos
+ * en los componentes presentacionales.
+ *
+ * Si mañana los datos se migran de un archivo local a un CMS headless o API:
+ *   1. Solo se debe modificar este adaptador y el schema de validación.
+ *   2. Los componentes presentacionales no necesitan cambios — ya reciben
+ *      datos tipados y limpios vía props (Dependency Injection).
+ *
+ * Beneficios estratégicos:
+ *   - Desacoplamiento total entre origen de datos y UI.
+ *   - Un único punto de sanitización (XSS, normalización de URLs, etc.).
+ *   - Validación temprana en build-time (Zod schema) antes de llegar a los
+ *     templates.
+ * ============================================================================
+ */
+
+/**
  * Sanitize string by trimming whitespace and escaping potentially dangerous characters
  */
 function sanitizeString(input: string): string {

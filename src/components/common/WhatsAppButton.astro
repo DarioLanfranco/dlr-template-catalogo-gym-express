@@ -1,20 +1,17 @@
 ---
-import { siteConfig } from '../../config/site-config';
-
 interface Props {
-	phoneNumber?: string;
+	phoneNumber: string;
 	message?: string;
 }
 
 const { 
-	phoneNumber = siteConfig.contact.whatsappNumber, 
+	phoneNumber,
 	message = 'Hola, quiero hacer una consulta sobre los pases del gimnasio.' 
 } = Astro.props;
 
-// Generate secure WhatsApp URL with sanitized message
 function generateWhatsAppUrl(number: string, msg: string): string {
-	const sanitizedNumber = number.replace(/\D/g, ''); // Remove non-digit characters
-	const sanitizedMessage = encodeURIComponent(msg); // Sanitize message to prevent URL injection
+	const sanitizedNumber = number.replace(/\D/g, '');
+	const sanitizedMessage = encodeURIComponent(msg);
 	return `https://wa.me/${sanitizedNumber}?text=${sanitizedMessage}`;
 }
 

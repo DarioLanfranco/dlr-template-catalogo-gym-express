@@ -1,10 +1,14 @@
 ---
-import { siteConfig } from "../../config/site-config";
+interface Props {
+  siteName: string;
+}
+
+const { siteName } = Astro.props;
 ---
 
 <footer>
   <p>
-    &copy; 2026 Copyright {siteConfig.siteName}. Todos los derechos
+    &copy; 2026 Copyright {siteName}. Todos los derechos
     reservados. Desarrollado por Dario Lanfranco
   </p>
 </footer>

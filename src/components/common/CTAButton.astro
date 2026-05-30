@@ -1,0 +1,67 @@
+---
+interface Props {
+  href: string;
+  variant?: "primary" | "secondary";
+  target?: string;
+  rel?: string;
+}
+
+const { href, variant = "primary", target, rel } = Astro.props;
+---
+
+<a
+  href={href}
+  class={"cta cta--" + variant}
+  {target}
+  {rel}
+>
+  <slot />
+</a>
+
+<style>
+  .cta {
+    display: inline-block;
+    padding: 1rem 2rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: 2px solid transparent;
+    transition:
+      transform 0.2s var(--ease-spring),
+      opacity 0.2s var(--ease-spring),
+      box-shadow 0.2s var(--ease-spring),
+      border-color 0.2s var(--ease-spring);
+    text-decoration: none;
+  }
+
+  .cta--primary {
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+  }
+
+  .cta--primary:hover {
+    opacity: 0.9;
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(255, 159, 28, 0.3);
+    border-color: rgba(255, 159, 28, 0.5);
+  }
+
+  .cta--primary:active {
+    transform: scale(0.98);
+  }
+
+  .cta--secondary {
+    background-color: transparent;
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .cta--secondary:hover {
+    background-color: rgba(255, 159, 28, 0.1);
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(255, 159, 28, 0.2);
+  }
+
+  .cta--secondary:active {
+    transform: scale(0.98);
+  }
+</style>

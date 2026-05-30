@@ -1,19 +1,26 @@
 ---
-import { siteConfig } from "../../config/site-config";
 import { Image } from "astro:assets";
 import gymHero from "../../assets/images/gym1.webp";
 import gymHero2 from "../../assets/images/gym14.webp";
 import gymHero3 from "../../assets/images/gym15.webp";
+import CTAButton from "../common/CTAButton.astro";
+
+interface Props {
+  tagline: string;
+  description: string;
+}
+
+const { tagline, description } = Astro.props;
 ---
 
 <section id="inicio" class="hero">
   <div class="hero-content">
-    <h2>{siteConfig.tagline}</h2>
-    <p>{siteConfig.description}</p>
-    <a href="#servicios" class="cta-button">Ver Servicios</a>
+    <h2>{tagline}</h2>
+    <p>{description}</p>
+    <CTAButton href="#servicios">Ver Servicios</CTAButton>
   </div>
   <div class="hero-grid">
-    <div class="hero-image hero-image-primary">
+    <div class="hero-image hero-image-primary media-card">
       <Image
         src={gymHero}
         alt="Gym interior"
@@ -23,9 +30,10 @@ import gymHero3 from "../../assets/images/gym15.webp";
         format="webp"
         quality={75}
         loading="eager"
+        fetchpriority="high"
       />
     </div>
-    <div class="hero-image hero-image-secondary">
+    <div class="hero-image hero-image-secondary media-card">
       <Image
         src={gymHero2}
         alt="Training equipment"
@@ -34,7 +42,7 @@ import gymHero3 from "../../assets/images/gym15.webp";
         loading="lazy"
       />
     </div>
-    <div class="hero-image hero-image-tertiary">
+    <div class="hero-image hero-image-tertiary media-card">
       <Image
         src={gymHero3}
         alt="Gym atmosphere"
@@ -81,32 +89,6 @@ import gymHero3 from "../../assets/images/gym15.webp";
     opacity: 0.9;
   }
 
-  .cta-button {
-    display: inline-block;
-    background-color: var(--color-accent);
-    color: var(--color-primary);
-    padding: 1rem 2rem;
-    font-weight: 600;
-    border-radius: 0.5rem;
-    transition:
-      transform 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1)),
-      opacity 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1)),
-      box-shadow 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1)),
-      border-color 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
-    border: 2px solid transparent;
-  }
-
-  .cta-button:hover {
-    opacity: 0.9;
-    transform: scale(1.03);
-    box-shadow: 0 4px 12px rgba(255, 159, 28, 0.3);
-    border-color: rgba(255, 159, 28, 0.5);
-  }
-
-  .cta-button:active {
-    transform: scale(0.98);
-  }
-
   .hero-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -115,13 +97,7 @@ import gymHero3 from "../../assets/images/gym15.webp";
   }
 
   .hero-image {
-    overflow: hidden;
     border-radius: 1rem;
-    transition: transform 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
-  }
-
-  .hero-image:hover {
-    transform: scale(1.02);
   }
 
   .hero-image-primary {
@@ -138,6 +114,17 @@ import gymHero3 from "../../assets/images/gym15.webp";
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  @media (max-width: 1399px) {
+    .hero {
+      padding: 4rem 2rem;
+      gap: 2.5rem;
+    }
+
+    .hero-content h2 {
+      font-size: 2.5rem;
+    }
   }
 
   @media (max-width: 768px) {

@@ -61,16 +61,39 @@ img {
   display: block;
 }
 
-.reveal-on-scroll {
-  opacity: 0;
-  transform: translateY(40px);
-  transition:
-    opacity 0.8s var(--ease-spring),
-    transform 0.8s var(--ease-spring);
-  will-change: transform, opacity;
+/*
+ * Accessibility: Respect OS-level motion preference (WCAG 2.1 SC 2.3.3).
+ * Users who set "Reduce motion" in their OS see content fully visible
+ * and static from the start — no translateY/opacity transitions.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition:
+      opacity 0.8s var(--ease-spring),
+      transform 0.8s var(--ease-spring);
+    will-change: transform, opacity;
+  }
+
+  .reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.reveal-on-scroll.is-visible {
+.reveal-on-scroll {
   opacity: 1;
   transform: translateY(0);
+}
+
+.media-card {
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  transition: transform 0.3s var(--ease-spring);
+}
+
+.media-card:hover {
+  transform: scale(1.02);
 }

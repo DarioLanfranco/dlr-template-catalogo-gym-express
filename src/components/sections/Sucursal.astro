@@ -1,8 +1,16 @@
 ---
-import { siteConfig } from "../../config/site-config";
 import facebookIcon from "../../assets/brand/icons/facebook.svg";
 import instagramIcon from "../../assets/brand/icons/instagram.svg";
 import xIcon from "../../assets/brand/icons/x.svg";
+import CTAButton from "../common/CTAButton.astro";
+
+interface Props {
+  businessHours: string;
+  address: string;
+  googleMapsLink: string;
+}
+
+const { businessHours, address, googleMapsLink } = Astro.props;
 ---
 
 <section id="sucursal" class="sucursal reveal-on-scroll">
@@ -10,19 +18,19 @@ import xIcon from "../../assets/brand/icons/x.svg";
   <div class="sucursal-content">
     <div class="sucursal-item reveal-on-scroll">
       <h3>Horarios</h3>
-      <p>{siteConfig.contact.businessHours}</p>
+      <p>{businessHours}</p>
     </div>
     <div class="sucursal-item reveal-on-scroll">
       <h3>Ubicación</h3>
-      <p>{siteConfig.contact.address}</p>
-      <a
-        href={siteConfig.contact.googleMapsLink}
+      <p>{address}</p>
+      <CTAButton
+        href={googleMapsLink}
+        variant="secondary"
         target="_blank"
         rel="noopener noreferrer"
-        class="premium-button"
       >
         Ver en Google Maps
-      </a>
+      </CTAButton>
     </div>
     <div class="sucursal-item reveal-on-scroll">
       <h3>Redes Sociales</h3>
@@ -119,31 +127,6 @@ import xIcon from "../../assets/brand/icons/x.svg";
     opacity: 0.9;
   }
 
-  .premium-button {
-    display: inline-block;
-    background-color: var(--color-accent);
-    color: var(--color-primary);
-    padding: 1rem 2rem;
-    font-weight: 600;
-    border-radius: 0.5rem;
-    transition:
-      transform 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1)),
-      opacity 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1)),
-      box-shadow 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
-    border: 2px solid transparent;
-  }
-
-  .premium-button:hover {
-    opacity: 0.9;
-    transform: scale(1.03);
-    box-shadow: 0 4px 12px rgba(255, 159, 28, 0.3);
-    border-color: rgba(255, 159, 28, 0.5);
-  }
-
-  .premium-button:active {
-    transform: scale(0.98);
-  }
-
   .redes-content {
     display: flex;
     flex-direction: column;
@@ -158,8 +141,8 @@ import xIcon from "../../assets/brand/icons/x.svg";
     width: 48px;
     height: 48px;
     transition:
-      transform 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1)),
-      opacity 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
+      transform 0.2s var(--ease-spring),
+      opacity 0.2s var(--ease-spring);
     border-radius: 0.5rem;
   }
 
@@ -177,6 +160,20 @@ import xIcon from "../../assets/brand/icons/x.svg";
     width: 48px;
     height: 48px;
     display: block;
+  }
+
+  @media (max-width: 1399px) {
+    .sucursal {
+      padding: 4rem 2rem 2rem;
+    }
+
+    .sucursal h2 {
+      font-size: 2.25rem;
+    }
+
+    .sucursal-content {
+      gap: 1.5rem;
+    }
   }
 
   @media (max-width: 768px) {
