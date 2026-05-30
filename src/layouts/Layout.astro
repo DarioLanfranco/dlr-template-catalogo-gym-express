@@ -1,12 +1,12 @@
 ---
-import { siteConfig } from '../config/site-config';
-import '../styles/global.css';
-import WhatsAppButton from '../components/common/WhatsAppButton.astro';
-import Navbar from '../components/Navbar.astro';
+import { siteConfig } from "../config/site-config";
+import "../styles/global.css";
+import WhatsAppButton from "../components/common/WhatsAppButton.astro";
+import Navbar from "../components/Navbar.astro";
 
 interface Props {
-	title: string;
-	description?: string;
+  title: string;
+  description?: string;
 }
 
 const { title, description = siteConfig.description } = Astro.props;
@@ -14,95 +14,101 @@ const { title, description = siteConfig.description } = Astro.props;
 
 <!doctype html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="description" content={description} />
-		<meta name="generator" content={Astro.generator} />
-		
-		<!-- OpenGraph -->
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:type" content="website" />
-		
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		
-		<title>{title} | {siteConfig.siteName}</title>
-		
-		<style is:global>
-			html {
-				scroll-behavior: smooth;
-			}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
 
-			body.nav-open {
-				overflow: hidden;
-			}
-		</style>
-	</head>
-	<body>
-		<header>
-			<Navbar />
-		</header>
-		<main>
-			<slot />
-		</main>
-		<footer>
-			<slot name="footer" />
-		</footer>
-		<WhatsAppButton />
-		
-		<script>
-			const observerOptions = {
-				root: null,
-				rootMargin: '0px',
-				threshold: 0.15
-			};
+    <!-- OpenGraph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
 
-			const observer = new IntersectionObserver((entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						entry.target.classList.add('is-visible');
-					}
-				});
-			}, observerOptions);
+    <link rel="icon" type="image/svg" href="/favicon.svg" />
 
-			document.querySelectorAll('.reveal-on-scroll').forEach((element) => {
-				observer.observe(element);
-			});
+    <title>{title} | {siteConfig.siteName}</title>
 
-			// Active nav link tracking
-			const sections = document.querySelectorAll('section[id]');
-			const navLinks = document.querySelectorAll('.nav-links a');
+    <style is:global>
+      html {
+        scroll-behavior: smooth;
+      }
 
-			if (sections.length && navLinks.length) {
-				const sectionObserver = new IntersectionObserver((entries) => {
-					entries.forEach((entry) => {
-						if (entry.isIntersecting) {
-							navLinks.forEach((link) => {
-								const isActive = link.getAttribute('href') === `#${entry.target.id}`;
-								link.classList.toggle('active', isActive);
-							});
-						}
-					});
-				}, { threshold: 0.3 });
+      body.nav-open {
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <Navbar />
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer>
+      <slot name="footer" />
+    </footer>
+    <WhatsAppButton />
 
-				sections.forEach((section) => sectionObserver.observe(section));
-			}
-		</script>
-	</body>
+    <script>
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.15,
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".reveal-on-scroll").forEach((element) => {
+        observer.observe(element);
+      });
+
+      // Active nav link tracking
+      const sections = document.querySelectorAll("section[id]");
+      const navLinks = document.querySelectorAll(".nav-links a");
+
+      if (sections.length && navLinks.length) {
+        const sectionObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                navLinks.forEach((link) => {
+                  const isActive =
+                    link.getAttribute("href") === `#${entry.target.id}`;
+                  link.classList.toggle("active", isActive);
+                });
+              }
+            });
+          },
+          { threshold: 0.3 },
+        );
+
+        sections.forEach((section) => sectionObserver.observe(section));
+      }
+    </script>
+  </body>
 </html>
 
-<style define:vars={{ 
-	primary: siteConfig.theme.primary,
-	accent: siteConfig.theme.accent,
-	background: siteConfig.theme.background,
-	text: siteConfig.theme.text 
-}} is:global>
-	:root {
-		--color-primary: var(--primary);
-		--color-accent: var(--accent);
-		--color-background: var(--background);
-		--color-text: var(--text);
-	}
+<style
+  define:vars={{
+    primary: siteConfig.theme.primary,
+    accent: siteConfig.theme.accent,
+    background: siteConfig.theme.background,
+    text: siteConfig.theme.text,
+  }}
+  is:global
+>
+  :root {
+    --color-primary: var(--primary);
+    --color-accent: var(--accent);
+    --color-background: var(--background);
+    --color-text: var(--text);
+  }
 </style>

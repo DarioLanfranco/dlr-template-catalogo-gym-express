@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import logoIronPulse from "../assets/brand/logo-ironpulse.png";
+import logoIronPulse from "../assets/brand/logo-ironpulse.webp";
 ---
 
 <nav class="navbar" aria-label="Navegación principal">
@@ -129,14 +129,14 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.png";
 
 <style>
   .navbar {
+    padding: 0 4rem;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    padding: 3rem 4rem 0;
+    align-items: center;
     width: 100%;
     box-sizing: border-box;
     background-color: var(--color-primary);
-    min-height: 90px;
+    height: 90px;
     position: relative;
   }
 
@@ -145,6 +145,8 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.png";
     align-items: center;
     z-index: 50;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: 4rem;
+    margin-top: 18rem;
   }
 
   .navbar-logo:hover {
@@ -153,8 +155,8 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.png";
 
   .navbar-logo img {
     width: 330px;
-    aspect-ratio: 600 / 557;
-    display: block;
+    aspect-ratio: 1550 / 1440;
+    display: flex;
   }
 
   .hamburger-menu {
@@ -248,9 +250,11 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.png";
     color: var(--color-accent);
   }
 
-  @media (min-width: 901px) and (max-width: 1200px) {
+  @media (min-width: 901px) and (max-width: 1400px) {
     .navbar-logo img {
       width: 150px;
+      left: 15rem;
+      margin-bottom: 10rem;
     }
   }
 
@@ -259,16 +263,17 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.png";
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 1.5rem;
+      padding: 0 2rem;
       min-height: 80px;
     }
 
     .navbar-logo {
-      padding-left: 0;
+      margin-left: 5rem;
+      margin-top: 4rem;
     }
 
     .navbar-logo img {
-      width: 150px;
+      width: 120px;
     }
 
     .hamburger-menu {
