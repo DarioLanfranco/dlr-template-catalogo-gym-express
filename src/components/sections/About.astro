@@ -1,22 +1,26 @@
 ---
-import { siteConfig } from "../../config/site-config";
 import { Image } from "astro:assets";
 import coachs1 from "../../assets/images/coachs1.webp";
+
+interface Props {
+  subtitle: string;
+  title: string;
+  text1: string;
+  text2: string;
+}
+
+const { subtitle, title, text1, text2 } = Astro.props;
 ---
 
 <section id="conocenos" class="about reveal-on-scroll">
   <div class="about-content">
     <div class="about-text">
-      <p class="subtitle reveal-on-scroll">
-        {siteConfig.about.history.subtitle}
-      </p>
-      <h2 class="reveal-on-scroll">
-        {siteConfig.about.history.title.toUpperCase()}
-      </h2>
-      <p class="reveal-on-scroll">{siteConfig.about.history.text1}</p>
-      <p class="reveal-on-scroll">{siteConfig.about.history.text2}</p>
+      <p class="subtitle reveal-on-scroll">{subtitle}</p>
+      <h2 class="reveal-on-scroll">{title.toUpperCase()}</h2>
+      <p class="reveal-on-scroll">{text1}</p>
+      <p class="reveal-on-scroll">{text2}</p>
     </div>
-    <div class="about-image reveal-on-scroll">
+    <div class="about-image reveal-on-scroll media-card">
       <Image
         src={coachs1}
         alt="Historia de Iron Pulse Gym"
@@ -65,21 +69,24 @@ import coachs1 from "../../assets/images/coachs1.webp";
     opacity: 0.9;
   }
 
-  .about-image {
-    aspect-ratio: 4/3;
-    overflow: hidden;
-    border-radius: 1.5rem;
-    transition: transform 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
-  }
-
-  .about-image:hover {
-    transform: scale(1.02);
-  }
-
   .about-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  @media (max-width: 1399px) {
+    .about {
+      padding: 4rem 2rem;
+    }
+
+    .about-content {
+      gap: 2.5rem;
+    }
+
+    .about-text h2 {
+      font-size: 2.25rem;
+    }
   }
 
   @media (max-width: 768px) {

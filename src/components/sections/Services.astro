@@ -1,27 +1,40 @@
 ---
-import { siteConfig } from "../../config/site-config";
 import { Image } from "astro:assets";
-import coachs1 from "../../assets/images/coachs1.webp";
-import spinning1 from "../../assets/images/spinning1.webp";
-import pilates1 from "../../assets/images/pilates1.webp";
-import gym12 from "../../assets/images/gym12.webp";
 
-const serviceImages = {
-  "coachs1.webp": coachs1,
-  "spinning1.webp": spinning1,
-  "pilates1.webp": pilates1,
-  "gym12.webp": gym12,
-};
+interface Service {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+}
+
+interface Props {
+  services: Service[];
+}
+
+const { services } = Astro.props;
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/images/*.webp",
+  { eager: true },
+);
+
+const serviceImages = Object.fromEntries(
+  Object.entries(images).map(([path, module]) => [
+    path.split("/").pop(),
+    module.default,
+  ]),
+);
 ---
 
 <section id="servicios" class="services reveal-on-scroll">
   <h2 class="reveal-on-scroll">Nuestros Servicios</h2>
   <div class="services-grid">
     {
-      siteConfig.services.map((service) => (
-        <article class="service-card reveal-on-scroll" id={service.id}>
+      services.map((service) => (
+        <article class="service-card reveal-on-scroll media-card" id={service.id}>
           <Image
-            src={serviceImages[service.image as keyof typeof serviceImages]}
+            src={serviceImages[service.image]}
             alt={service.title}
             width={600}
             height={450}
@@ -61,10 +74,6 @@ const serviceImages = {
 
   .service-card {
     position: relative;
-    border-radius: 1.5rem;
-    aspect-ratio: 4/3;
-    overflow: hidden;
-    transition: transform 0.3s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
   }
 
   .service-card:hover {
@@ -78,7 +87,7 @@ const serviceImages = {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
+    transition: transform 0.3s var(--ease-spring);
   }
 
   .service-card:hover .service-card-image {
@@ -113,6 +122,16 @@ const serviceImages = {
   .service-card p {
     color: rgba(255, 255, 255, 0.9);
     line-height: 1.6;
+  }
+
+  @media (max-width: 1399px) {
+    .services {
+      padding: 4rem 2rem;
+    }
+
+    .services h2 {
+      font-size: 2.25rem;
+    }
   }
 
   @media (max-width: 768px) {

@@ -1,16 +1,22 @@
 ---
-import { siteConfig } from "../../config/site-config";
 import { Image } from "astro:assets";
 import gym12 from "../../assets/images/gym12.webp";
+
+interface Props {
+  title: string;
+  text: string;
+}
+
+const { title, text } = Astro.props;
 ---
 
 <section id="mision" class="mission reveal-on-scroll">
   <div class="mission-content">
     <div class="mission-text reveal-on-scroll">
-      <h2>{siteConfig.about.mission.title}</h2>
-      <p>{siteConfig.about.mission.text}</p>
+      <h2>{title}</h2>
+      <p>{text}</p>
     </div>
-    <div class="mission-image reveal-on-scroll">
+    <div class="mission-image reveal-on-scroll media-card">
       <Image
         src={gym12}
         alt="Misión de Iron Pulse Gym"
@@ -52,21 +58,24 @@ import gym12 from "../../assets/images/gym12.webp";
     color: var(--color-primary);
   }
 
-  .mission-image {
-    aspect-ratio: 4/3;
-    overflow: hidden;
-    border-radius: 1.5rem;
-    transition: transform 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
-  }
-
-  .mission-image:hover {
-    transform: scale(1.02);
-  }
-
   .mission-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  @media (max-width: 1399px) {
+    .mission {
+      padding: 4rem 2rem;
+    }
+
+    .mission-content {
+      gap: 2.5rem;
+    }
+
+    .mission-text h2 {
+      font-size: 2.25rem;
+    }
   }
 
   @media (max-width: 768px) {

@@ -155,7 +155,7 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.webp";
 
   .navbar-logo {
     will-change: transform;
-    transition: transform 0.3s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
+    transition: transform 0.3s var(--ease-spring);
     margin-top: var(--logo-offset-y, 288px);
     margin-left: var(--logo-offset-x, 4rem);
   }
@@ -193,7 +193,6 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.webp";
     height: 3px;
     background: #ffffff;
     border-radius: 10px;
-    transition: all 0.3s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
     transform-origin: center;
   }
 
@@ -242,7 +241,7 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.webp";
     height: 2px;
     background: var(--color-accent);
     transform: scaleX(0);
-    transition: transform 0.2s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
+    transition: transform 0.2s var(--ease-spring);
   }
 
   .nav-links a:hover,
@@ -258,6 +257,17 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.webp";
 
   .nav-links a.active {
     color: var(--color-accent);
+  }
+
+  /*
+   * Accessibility: Respect OS-level motion preference (WCAG 2.1 SC 2.3.3).
+   * Hamburger lines and mobile menu only animate when the user has NOT
+   * requested reduced motion. Otherwise the transitions are instant.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    .hamburger-menu span {
+      transition: all 0.3s var(--ease-spring);
+    }
   }
 
   /* Tablet (<= 1399px): overrides desktop default */
@@ -302,9 +312,6 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.webp";
       transform: scale(0.95);
       opacity: 0;
       pointer-events: none;
-      transition:
-        transform 0.3s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1)),
-        opacity 0.3s var(--ease-spring, cubic-bezier(0.4, 0, 0.2, 1));
       z-index: 40;
       height: auto;
       align-items: stretch;
@@ -315,6 +322,14 @@ import logoIronPulse from "../assets/brand/logo-ironpulse.webp";
       transform: scale(1);
       opacity: 1;
       pointer-events: auto;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .nav-links {
+        transition:
+          transform 0.3s var(--ease-spring),
+          opacity 0.3s var(--ease-spring);
+      }
     }
 
     .nav-links a {

@@ -7,15 +7,26 @@ import Mission from "../components/sections/Mission.astro";
 import Services from "../components/sections/Services.astro";
 import Sucursal from "../components/sections/Sucursal.astro";
 import Footer from "../components/sections/Footer.astro";
+
+const { tagline, description, about, contact, services, siteName } = siteConfig;
 ---
 
-<Layout title={siteConfig.siteName}>
+<Layout title={siteName}>
   <main>
-    <Hero />
-    <About />
-    <Mission />
-    <Services />
-    <Sucursal />
-    <Footer slot="footer" />
+    <Hero tagline={tagline} description={description} />
+    <About
+      subtitle={about.history.subtitle}
+      title={about.history.title}
+      text1={about.history.text1}
+      text2={about.history.text2}
+    />
+    <Mission title={about.mission.title} text={about.mission.text} />
+    <Services services={services} />
+    <Sucursal
+      businessHours={contact.businessHours}
+      address={contact.address}
+      googleMapsLink={contact.googleMapsLink}
+    />
+    <Footer slot="footer" siteName={siteName} />
   </main>
 </Layout>

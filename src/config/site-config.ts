@@ -1,4 +1,4 @@
-import { clientConfigSchema } from "./schema";
+import { clientConfigSchema, type ClientConfigInput } from "./schema";
 import { transformConfig } from "./mapper";
 import type { UIConfig } from "./types";
 
@@ -69,7 +69,7 @@ const rawIronPulseConfig = {
       image: "gym12.webp",
     },
   },
-};
+} satisfies ClientConfigInput;
 
 // Validate raw config against Zod schema
 const validationResult = clientConfigSchema.safeParse(rawIronPulseConfig);
