@@ -1,13 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import coachs1 from "../../assets/images/coachs1.webp";
-
-interface Service {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-}
+import type { Service } from "../../config/schema";
 
 interface Props {
   services: Service[];

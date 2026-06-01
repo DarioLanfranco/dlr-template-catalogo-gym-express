@@ -1,6 +1,8 @@
 ---
+import type { buildSiteSchema } from "../../config/helpers";
+
 interface Props {
-  data: Record<string, unknown>;
+  data: ReturnType<typeof buildSiteSchema>;
 }
 
 const { data } = Astro.props;

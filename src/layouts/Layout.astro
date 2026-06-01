@@ -23,6 +23,7 @@ const schema = buildSiteSchema(siteConfig, siteUrl, OG_URL);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; script-src 'self' 'sha256-J1iTm9CIooXw7WkoURuJoDOn8EeWA8RoCHDBxxaRwzo=' 'sha256-Ibq6LqkcSoSarxNc6wx3vKtYSj/Q/35zdeQ5y9MkzcI='; style-src 'self' 'unsafe-inline';" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={currentUrl} />

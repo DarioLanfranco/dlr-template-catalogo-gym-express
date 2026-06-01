@@ -68,8 +68,8 @@ import ThemeToggle from "./common/ThemeToggle.astro";
   .navbar-logo {
     will-change: transform;
     transition: transform 0.3s var(--ease-spring);
-    margin-top: var(--logo-offset-y, 288px);
-    margin-left: var(--logo-offset-x, 4rem);
+    margin-top: 288px;
+    margin-left: 4rem;
   }
 
   .navbar-logo:hover {
@@ -191,8 +191,8 @@ import ThemeToggle from "./common/ThemeToggle.astro";
     }
 
     .navbar-logo {
-      --logo-offset-y: 64px;
-      --logo-offset-x: 5rem;
+      margin-top: 64px;
+      margin-left: 5rem;
     }
 
     .navbar-logo img {
@@ -213,7 +213,7 @@ import ThemeToggle from "./common/ThemeToggle.astro";
       padding: 1.5rem;
       gap: 1rem;
       border-radius: 0.75rem;
-      border: 1px solid rgba(255, 159, 28, 0.2);
+      border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
       transform: scale(0.95);
       opacity: 0;
       pointer-events: none;
@@ -253,12 +253,12 @@ import ThemeToggle from "./common/ThemeToggle.astro";
 
     .nav-links a:hover,
     .nav-links a:focus-visible {
-      background-color: rgba(255, 159, 28, 0.1);
+      background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
       color: var(--color-primary);
     }
 
     .nav-links a.active {
-      background-color: rgba(255, 159, 28, 0.1);
+      background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
     }
   }
 </style>

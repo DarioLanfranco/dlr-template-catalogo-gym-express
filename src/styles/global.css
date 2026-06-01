@@ -82,26 +82,28 @@ img {
  * Accessibility: Respect OS-level motion preference (WCAG 2.1 SC 2.3.3).
  * Users who set "Reduce motion" in their OS see content fully visible
  * and static from the start — no translateY/opacity transitions.
+ *
+ * Single DRY block using native CSS nesting.
+ * Outer scope = accessible fallback (always visible).
+ * Nested @media = animated reveal when user allows motion.
  */
-@media (prefers-reduced-motion: no-preference) {
-  .reveal-on-scroll {
+.reveal-on-scroll {
+  opacity: 1;
+  transform: translateY(0);
+
+  @media (prefers-reduced-motion: no-preference) {
     opacity: 0;
     transform: translateY(40px);
     transition:
       opacity 0.8s var(--ease-spring),
       transform 0.8s var(--ease-spring);
     will-change: transform, opacity;
-  }
 
-  .reveal-on-scroll.is-visible {
-    opacity: 1;
-    transform: translateY(0);
+    &.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-}
-
-.reveal-on-scroll {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .media-card {

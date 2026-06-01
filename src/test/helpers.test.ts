@@ -117,13 +117,14 @@ describe("parseAddress", () => {
   it("falls back when no comma is present", () => {
     const result = parseAddress("Una direccion sin coma");
     expect(result.streetAddress).toBe("Una direccion sin coma");
-    expect(result.addressLocality).toBeUndefined();
+    expect(result.addressLocality).toBe("Ciudad Autónoma de Buenos Aires");
     expect(result.addressCountry).toBe("AR");
   });
 
   it("handles empty string gracefully", () => {
     const result = parseAddress("");
     expect(result.streetAddress).toBe("");
+    expect(result.addressLocality).toBe("Ciudad Autónoma de Buenos Aires");
     expect(result.addressCountry).toBe("AR");
   });
 

@@ -87,8 +87,14 @@ export const clientConfigSchema = z.object({
   theme: themeSchema,
   contact: contactSchema,
   social: socialSchema,
-  services: z.array(serviceSchema),
+  services: z.array(serviceSchema).default([]),
   about: aboutSchema,
 });
 
 export type ClientConfigInput = z.infer<typeof clientConfigSchema>;
+
+export type Service = Omit<z.infer<typeof serviceSchema>, "id"> & { id: string };
+
+export type UIConfig = Omit<z.infer<typeof clientConfigSchema>, "services"> & {
+  services: Service[];
+};

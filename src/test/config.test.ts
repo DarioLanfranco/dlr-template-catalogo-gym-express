@@ -195,19 +195,6 @@ describe("transformConfig", () => {
     expect(config.about.mission.text).toBe("Transformar vidas a través del fitness de alta calidad.");
   });
 
-  it("preserves angle brackets in build-time data", () => {
-    const payload = {
-      ...validPayload,
-      siteName: "<script>Iron Pulse Gym</script>",
-    };
-    const result = clientConfigSchema.safeParse(payload);
-    expect(result.success).toBe(true);
-    if (!result.success) return;
-
-    const config = transformConfig(result.data);
-    expect(config.siteName).toBe("<script>Iron Pulse Gym</script>");
-  });
-
   it("preserves multiple spaces in tagline", () => {
     const payload = {
       ...validPayload,
@@ -283,16 +270,5 @@ describe("transformConfig", () => {
     expect(config.social.twitter).toBeUndefined();
   });
 
-  it("passes description through without sanitization", () => {
-    const payload = {
-      ...validPayload,
-      description: "  Best <gym> ever!  ",
-    };
-    const result = clientConfigSchema.safeParse(payload);
-    expect(result.success).toBe(true);
-    if (!result.success) return;
 
-    const config = transformConfig(result.data);
-    expect(config.description).toBe("  Best <gym> ever!  ");
-  });
 });

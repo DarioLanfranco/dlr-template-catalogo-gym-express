@@ -1,6 +1,6 @@
 import { clientConfigSchema, type ClientConfigInput } from "./schema";
 import { transformConfig } from "./mapper";
-import type { UIConfig } from "./types";
+import type { UIConfig } from "./schema";
 
 // Raw client data for Iron Pulse Gym
 const rawIronPulseConfig = {
@@ -88,5 +88,4 @@ const processedConfig: UIConfig = transformConfig(validationResult.data);
 // Export the final, validated, and transformed configuration
 export const siteConfig: UIConfig = processedConfig;
 
-// Export the type for use in components
-export type { UIConfig } from "./types";
+export type { UIConfig } from "./schema";

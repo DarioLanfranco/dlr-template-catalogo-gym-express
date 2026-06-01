@@ -33,7 +33,7 @@ export interface OpeningHoursSpecification {
 export interface PostalAddress {
   "@type": "PostalAddress";
   streetAddress: string;
-  addressLocality?: string;
+  addressLocality: string;
   addressCountry: string;
 }
 
@@ -58,7 +58,7 @@ export function parseOpeningHours(businessHours: string): OpeningHoursSpecificat
 }
 
 export function buildSiteSchema(
-  siteConfig: { siteName: string; description: string; contact: { phone: string; email: string; address: string; businessHours: string }; social: { facebook?: string; instagram?: string; twitter?: string }; services: Array<{ title: string; description: string }> },
+  siteConfig: { siteName: string; description: string; contact: { phone: string; email: string; address: string; businessHours: string }; social: { facebook?: string; instagram?: string; twitter?: string }; services: Array<{ title: string; description: string; image: string }> },
   siteUrl: URL,
   ogImageUrl: string,
 ) {
@@ -85,13 +85,13 @@ export function buildSiteSchema(
         name: s.title,
         description: s.description,
         provider: { "@type": "LocalBusiness" as const, name: siteConfig.siteName },
-        image: ogImageUrl,
+        image: s.image ? new URL(s.image, siteUrl).href : ogImageUrl,
       })),
     ],
   };
 }
 
-export function parseAddress(raw: string): PostalAddress {
+export function parseAddress(raw: string, defaultLocality = "Ciudad Autónoma de Buenos Aires"): PostalAddress {
   const parts = raw.split(",").map((p) => p.trim());
   if (parts.length >= 2) {
     return {
@@ -104,6 +104,7 @@ export function parseAddress(raw: string): PostalAddress {
   return {
     "@type": "PostalAddress",
     streetAddress: raw,
+    addressLocality: defaultLocality,
     addressCountry: "AR",
   };
 }
