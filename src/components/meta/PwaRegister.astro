@@ -1,0 +1,16 @@
+---
+interface Props {
+  isProd: boolean;
+}
+
+const { isProd } = Astro.props;
+---
+{isProd && (
+  <script is:inline>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("/sw.js");
+      });
+    }
+  </script>
+)}

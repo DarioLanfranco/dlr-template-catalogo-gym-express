@@ -2,10 +2,9 @@
 
 :root,
 [data-theme="dark"] {
-  --color-primary: #121212;
-  --color-accent: #FF9F1C;
-  --color-background: #FFFFFF;
-  --color-text: #121212;
+  --color-bg: #121212;
+  --color-primary: #FF9F1C;
+  --color-text-base: #FFFFFF;
   --color-surface: #1A1A1A;
 
   --ease-spring: cubic-bezier(0.4, 0, 0.2, 1);
@@ -19,10 +18,9 @@
 }
 
 [data-theme="light"] {
-  --color-primary: #FFFFFF;
-  --color-accent: #CC6A00;
-  --color-background: #1A1A1A;
-  --color-text: #4A4A4A;
+  --color-bg: #FFFFFF;
+  --color-primary: #CC6A00;
+  --color-text-base: #1A1A1A;
   --color-surface: #F5F5F5;
 
   --hero-overlay-start: rgba(255, 255, 255, 0.9);
@@ -62,15 +60,15 @@ body {
     Ubuntu,
     Cantarell,
     sans-serif;
-  background-color: var(--color-primary);
-  color: var(--color-background);
+  background-color: var(--color-bg);
+  color: var(--color-text-base);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 a {
-  color: var(--color-accent);
+  color: var(--color-primary);
   text-decoration: none;
 }
 
@@ -115,4 +113,50 @@ img {
 
 .media-card:hover {
   transform: scale(1.02);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body.nav-open {
+  overflow: hidden;
+}
+
+/*
+ * Accessibility: skip-to-content link for keyboard users (WCAG 2.4.1).
+ * Hidden off-screen by default; appears at top of viewport when focused.
+ */
+.skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1.5rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 0.5rem;
+  z-index: 10000;
+  outline: 2px solid var(--color-text-base);
+  outline-offset: 2px;
+  text-decoration: none;
 }

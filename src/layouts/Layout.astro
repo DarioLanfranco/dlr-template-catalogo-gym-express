@@ -1,115 +1,21 @@
 ---
 import { siteConfig } from "../config/site-config";
+import { buildSiteSchema } from "../config/helpers";
 import "../styles/global.css";
-import WhatsAppButton from "../components/common/WhatsAppButton.astro";
+import ThemeScript from "../components/meta/ThemeScript.astro";
+import PwaRegister from "../components/meta/PwaRegister.astro";
 import Navbar from "../components/Navbar.astro";
-import ScrollReveal from "../components/common/ScrollReveal.astro";
 import JsonLd from "../components/common/JsonLd.astro";
+import WhatsAppButton from "../components/common/WhatsAppButton.astro";
+import ScrollReveal from "../components/common/ScrollReveal.astro";
 
-interface Props {
-  title: string;
-  description?: string;
-}
+interface Props { title: string; description?: string; }
 
 const { title, description = siteConfig.description } = Astro.props;
 const siteUrl = Astro.site ?? new URL("https://ironpulsegym.com");
-const isProd = import.meta.env.PROD;
-
-const OG_IMAGE_URL = new URL("/og-image.png", siteUrl).href;
-
-const esToEnDays: Record<string, string> = {
-  lunes: "Monday",
-  martes: "Tuesday",
-  miércoles: "Wednesday",
-  miercoles: "Wednesday",
-  jueves: "Thursday",
-  viernes: "Friday",
-  sábados: "Saturday",
-  sabados: "Saturday",
-  sábado: "Saturday",
-  sabado: "Saturday",
-  domingos: "Sunday",
-  domingo: "Sunday",
-};
-
-const DAY_RANGES: Record<string, string[]> = {
-  "lunes a viernes": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-  "lunes a sábado": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-  "lunes a domingo": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-  "sábados": ["Saturday"],
-  "sábado": ["Saturday"],
-  "domingos": ["Sunday"],
-  "domingo": ["Sunday"],
-};
-
-function parseOpeningHours(businessHours: string) {
-  const parts = businessHours.split("|").map((p) => p.trim());
-  return parts.map((part) => {
-    const match = part.match(/^([^:]+):\s*(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})$/);
-    if (!match) return null;
-    const dayPart = match[1].trim().toLowerCase();
-    const opens = match[2].padStart(5, "0");
-    const closes = match[3].padStart(5, "0");
-    const days = DAY_RANGES[dayPart] || [esToEnDays[dayPart] || dayPart].filter(Boolean);
-    return {
-      "@type": "OpeningHoursSpecification" as const,
-      dayOfWeek: days,
-      opens,
-      closes,
-    };
-  }).filter(Boolean);
-}
-
-function parseAddress(raw: string) {
-  const parts = raw.split(",").map((p) => p.trim());
-  if (parts.length >= 2) {
-    return {
-      "@type": "PostalAddress",
-      streetAddress: parts.slice(0, -1).join(", "),
-      addressLocality: parts[parts.length - 1],
-      addressCountry: "AR",
-    };
-  }
-  return {
-    "@type": "PostalAddress",
-    streetAddress: raw,
-    addressCountry: "AR",
-  };
-}
-
-const localBusinessSchema = {
-  "@type": "LocalBusiness",
-  name: siteConfig.siteName,
-  description: siteConfig.description,
-  url: siteUrl.href,
-  image: OG_IMAGE_URL,
-  logo: OG_IMAGE_URL,
-  telephone: siteConfig.contact.phone,
-  email: siteConfig.contact.email,
-  address: parseAddress(siteConfig.contact.address),
-  openingHoursSpecification: parseOpeningHours(siteConfig.contact.businessHours),
-  sameAs: [
-    siteConfig.social.facebook,
-    siteConfig.social.instagram,
-    siteConfig.social.twitter,
-  ].filter(Boolean),
-};
-
-const serviceEntities = siteConfig.services.map((service) => ({
-  "@type": "Service",
-  name: service.title,
-  description: service.description,
-  provider: {
-    "@type": "LocalBusiness",
-    name: siteConfig.siteName,
-  },
-  image: OG_IMAGE_URL,
-}));
-
-const schema = {
-  "@context": "https://schema.org",
-  "@graph": [localBusinessSchema, ...serviceEntities],
-};
+const OG_URL = new URL("/og-image.png", siteUrl).href;
+const currentUrl = new URL(Astro.url.pathname, siteUrl).href;
+const schema = buildSiteSchema(siteConfig, siteUrl, OG_URL);
 ---
 
 <!doctype html>
@@ -119,111 +25,29 @@ const schema = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-
-    <link rel="canonical" href={new URL(Astro.url.pathname, siteUrl).href} />
-
-    <!-- OpenGraph -->
+    <link rel="canonical" href={currentUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL("/og-image.png", siteUrl).href} />
-    <meta property="og:url" content={new URL(Astro.url.pathname, siteUrl).href} />
+    <meta property="og:image" content={OG_URL} />
+    <meta property="og:url" content={currentUrl} />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:type" content="website" />
-
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#FF9F1C" />
     <meta name="robots" content="index, follow" />
-
-    <script is:inline>
-      (function () {
-        var stored = localStorage.getItem("theme");
-        if (stored === "light" || stored === "dark") {
-          document.documentElement.setAttribute("data-theme", stored);
-        } else if (
-          window.matchMedia("(prefers-color-scheme: light)").matches
-        ) {
-          document.documentElement.setAttribute("data-theme", "light");
-        }
-      })();
-    </script>
-
-    {isProd && (
-      <script is:inline>
-        if ("serviceWorker" in navigator) {
-          window.addEventListener("load", function () {
-            navigator.serviceWorker.register("/sw.js");
-          });
-        }
-      </script>
-    )}
-
+    <ThemeScript />
+    <PwaRegister isProd={import.meta.env.PROD} />
     <JsonLd data={schema} />
-
     <title>{title} | {siteConfig.siteName}</title>
-
-    <style is:global>
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body.nav-open {
-        overflow: hidden;
-      }
-
-      /*
-       * Accessibility: skip-to-content link for keyboard users (WCAG 2.4.1).
-       * Hidden off-screen by default; appears at top of viewport when focused.
-       * Allows bypassing repetitive navigation to reach main content directly.
-       */
-      .skip-link {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-      }
-
-      .skip-link:focus {
-        position: fixed;
-        top: 0.5rem;
-        left: 0.5rem;
-        width: auto;
-        height: auto;
-        padding: 0.75rem 1.5rem;
-        margin: 0;
-        overflow: visible;
-        clip: auto;
-        white-space: normal;
-        background-color: var(--color-accent);
-        color: var(--color-primary);
-        font-weight: 600;
-        font-size: 0.95rem;
-        border-radius: 0.5rem;
-        z-index: 10000;
-        outline: 2px solid var(--color-background);
-        outline-offset: 2px;
-        text-decoration: none;
-      }
-    </style>
   </head>
   <body>
     <a href="#main-content" class="skip-link">Ir al contenido principal</a>
-    <header>
-      <Navbar />
-    </header>
-    <main id="main-content">
-      <slot />
-    </main>
+    <header><Navbar /></header>
+    <main id="main-content"><slot /></main>
     <slot name="footer" />
     <WhatsAppButton phoneNumber={siteConfig.contact.whatsappNumber} />
     <ScrollReveal />
   </body>
 </html>
-
-
