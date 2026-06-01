@@ -39,7 +39,11 @@ const { tagline, description } = Astro.props;
         alt="Training equipment"
         width={400}
         height={300}
+        widths={[400, 728, 800]}
+        format="webp"
+        quality={75}
         loading="lazy"
+        fetchpriority="low"
       />
     </div>
     <div class="hero-image hero-image-tertiary media-card">
@@ -52,6 +56,7 @@ const { tagline, description } = Astro.props;
         format="webp"
         quality={75}
         loading="lazy"
+        fetchpriority="low"
       />
     </div>
   </div>

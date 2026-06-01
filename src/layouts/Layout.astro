@@ -3,6 +3,8 @@ import { siteConfig } from "../config/site-config";
 import "../styles/global.css";
 import WhatsAppButton from "../components/common/WhatsAppButton.astro";
 import Navbar from "../components/Navbar.astro";
+import ScrollReveal from "../components/common/ScrollReveal.astro";
+import JsonLd from "../components/common/JsonLd.astro";
 
 interface Props {
   title: string;
@@ -11,6 +13,88 @@ interface Props {
 
 const { title, description = siteConfig.description } = Astro.props;
 const siteUrl = Astro.site ?? new URL("https://ironpulsegym.com");
+const isProd = import.meta.env.PROD;
+
+const OG_IMAGE_URL = new URL("/og-image.png", siteUrl).href;
+
+const esToEnDays: Record<string, string> = {
+  lunes: "Monday",
+  martes: "Tuesday",
+  miércoles: "Wednesday",
+  miercoles: "Wednesday",
+  jueves: "Thursday",
+  viernes: "Friday",
+  sábados: "Saturday",
+  sabados: "Saturday",
+  sábado: "Saturday",
+  sabado: "Saturday",
+  domingos: "Sunday",
+  domingo: "Sunday",
+};
+
+const DAY_RANGES: Record<string, string[]> = {
+  "lunes a viernes": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+  "lunes a sábado": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+  "lunes a domingo": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+  "sábados": ["Saturday"],
+  "sábado": ["Saturday"],
+  "domingos": ["Sunday"],
+  "domingo": ["Sunday"],
+};
+
+function parseOpeningHours(businessHours: string) {
+  const parts = businessHours.split("|").map((p) => p.trim());
+  return parts.map((part) => {
+    const match = part.match(/^([^:]+):\s*(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})$/);
+    if (!match) return null;
+    const dayPart = match[1].trim().toLowerCase();
+    const opens = match[2].padStart(5, "0");
+    const closes = match[3].padStart(5, "0");
+    const days = DAY_RANGES[dayPart] || [esToEnDays[dayPart] || dayPart].filter(Boolean);
+    return {
+      "@type": "OpeningHoursSpecification" as const,
+      dayOfWeek: days,
+      opens,
+      closes,
+    };
+  }).filter(Boolean);
+}
+
+function parseAddress(raw: string) {
+  const parts = raw.split(",").map((p) => p.trim());
+  if (parts.length >= 2) {
+    return {
+      "@type": "PostalAddress",
+      streetAddress: parts.slice(0, -1).join(", "),
+      addressLocality: parts[parts.length - 1],
+      addressCountry: "AR",
+    };
+  }
+  return {
+    "@type": "PostalAddress",
+    streetAddress: raw,
+    addressCountry: "AR",
+  };
+}
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: siteConfig.siteName,
+  description: siteConfig.description,
+  url: siteUrl.href,
+  image: OG_IMAGE_URL,
+  logo: OG_IMAGE_URL,
+  telephone: siteConfig.contact.phone,
+  email: siteConfig.contact.email,
+  address: parseAddress(siteConfig.contact.address),
+  openingHoursSpecification: parseOpeningHours(siteConfig.contact.businessHours),
+  sameAs: [
+    siteConfig.social.facebook,
+    siteConfig.social.instagram,
+    siteConfig.social.twitter,
+  ].filter(Boolean),
+};
 ---
 
 <!doctype html>
@@ -32,7 +116,34 @@ const siteUrl = Astro.site ?? new URL("https://ironpulsegym.com");
     <meta property="og:type" content="website" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#FF9F1C" />
     <meta name="robots" content="index, follow" />
+
+    <script is:inline>
+      (function () {
+        var stored = localStorage.getItem("theme");
+        if (stored === "light" || stored === "dark") {
+          document.documentElement.setAttribute("data-theme", stored);
+        } else if (
+          window.matchMedia("(prefers-color-scheme: light)").matches
+        ) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+
+    {isProd && (
+      <script is:inline>
+        if ("serviceWorker" in navigator) {
+          window.addEventListener("load", function () {
+            navigator.serviceWorker.register("/sw.js");
+          });
+        }
+      </script>
+    )}
+
+    <JsonLd data={localBusinessSchema} />
 
     <title>{title} | {siteConfig.siteName}</title>
 
@@ -95,75 +206,8 @@ const siteUrl = Astro.site ?? new URL("https://ironpulsegym.com");
     </main>
     <slot name="footer" />
     <WhatsAppButton phoneNumber={siteConfig.contact.whatsappNumber} />
-
-    <script>
-      const observerOptions = {
-        root: null,
-        rootMargin: "0px",
-        threshold: 0.15,
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-          }
-        });
-      }, observerOptions);
-
-      document.querySelectorAll(".reveal-on-scroll").forEach((element) => {
-        observer.observe(element);
-      });
-
-      const sectionObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const navLinks = document.querySelectorAll<HTMLAnchorElement>(
-                ".nav-links a",
-              );
-              navLinks.forEach((link) => {
-                const isActive =
-                  link.getAttribute("href") === `#${entry.target.id}`;
-                link.classList.toggle("active", isActive);
-              });
-            }
-          });
-        },
-        { threshold: 0.3 },
-      );
-
-      const sections = document.querySelectorAll("section[id]");
-      if (sections.length) {
-        sections.forEach((section) => sectionObserver.observe(section));
-      }
-
-      function cleanup() {
-        observer.disconnect();
-        sectionObserver.disconnect();
-        document.removeEventListener("astro:before-swap", cleanup);
-        window.removeEventListener("beforeunload", cleanup);
-      }
-
-      document.addEventListener("astro:before-swap", cleanup);
-      window.addEventListener("beforeunload", cleanup);
-    </script>
+    <ScrollReveal />
   </body>
 </html>
 
-<style
-  define:vars={{
-    primary: siteConfig.theme.primary,
-    accent: siteConfig.theme.accent,
-    background: siteConfig.theme.background,
-    text: siteConfig.theme.text,
-  }}
-  is:global
->
-  :root {
-    --color-primary: var(--primary);
-    --color-accent: var(--accent);
-    --color-background: var(--background);
-    --color-text: var(--text);
-  }
-</style>
+

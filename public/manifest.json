@@ -1,0 +1,21 @@
+{
+  "name": "Iron Pulse Gym",
+  "short_name": "Iron Pulse",
+  "description": "Un gimnasio boutique dedicado al entrenamiento personalizado de alta calidad. Equipamiento de última generación y entrenadores certificados para ayudarte a alcanzar tus metas fitness.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#FF9F1C",
+  "icons": [
+    {
+      "src": "/og-image.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/og-image.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

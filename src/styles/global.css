@@ -1,12 +1,22 @@
 @import '@fontsource-variable/inter/wght.css';
 
-:root {
+:root,
+[data-theme="dark"] {
   --color-primary: #121212;
   --color-accent: #FF9F1C;
   --color-background: #FFFFFF;
   --color-text: #121212;
+  --color-surface: #1A1A1A;
 
   --ease-spring: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="light"] {
+  --color-primary: #FFFFFF;
+  --color-accent: #CC6A00;
+  --color-background: #1A1A1A;
+  --color-text: #4A4A4A;
+  --color-surface: #F5F5F5;
 }
 
 /*
@@ -48,11 +58,6 @@ body {
 a {
   color: var(--color-accent);
   text-decoration: none;
-  transition: opacity 0.2s var(--ease-spring);
-}
-
-a:hover {
-  opacity: 0.8;
 }
 
 img {
