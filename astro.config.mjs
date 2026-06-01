@@ -2,8 +2,10 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// https://astro.build/config
+const isProd = process.env.NODE_ENV === 'production';
+
 export default defineConfig({
-  site: 'https://ironpulsegym.com',
+  site: 'https://dariolanfranco.github.io',
+  base: isProd ? '/dlr-template-catalogo-gym-express/' : '/',
   integrations: [sitemap()],
 });
