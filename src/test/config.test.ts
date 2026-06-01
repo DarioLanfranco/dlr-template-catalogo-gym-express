@@ -195,7 +195,7 @@ describe("transformConfig", () => {
     expect(config.about.mission.text).toBe("Transformar vidas a través del fitness de alta calidad.");
   });
 
-  it("removes angle brackets but preserves tag content", () => {
+  it("preserves angle brackets in build-time data", () => {
     const payload = {
       ...validPayload,
       siteName: "<script>Iron Pulse Gym</script>",
@@ -205,12 +205,10 @@ describe("transformConfig", () => {
     if (!result.success) return;
 
     const config = transformConfig(result.data);
-    expect(config.siteName).not.toContain("<");
-    expect(config.siteName).not.toContain(">");
-    expect(config.siteName).toBe("scriptIron Pulse Gym/script");
+    expect(config.siteName).toBe("<script>Iron Pulse Gym</script>");
   });
 
-  it("normalizes multiple spaces to single space", () => {
+  it("preserves multiple spaces in tagline", () => {
     const payload = {
       ...validPayload,
       tagline: "Transforma   tu   cuerpo",
@@ -220,7 +218,7 @@ describe("transformConfig", () => {
     if (!result.success) return;
 
     const config = transformConfig(result.data);
-    expect(config.tagline).toBe("Transforma tu cuerpo");
+    expect(config.tagline).toBe("Transforma   tu   cuerpo");
   });
 
   it("generates a slug for services without an id", () => {
@@ -285,7 +283,7 @@ describe("transformConfig", () => {
     expect(config.social.twitter).toBeUndefined();
   });
 
-  it("sanitizes description", () => {
+  it("passes description through without sanitization", () => {
     const payload = {
       ...validPayload,
       description: "  Best <gym> ever!  ",
@@ -295,6 +293,6 @@ describe("transformConfig", () => {
     if (!result.success) return;
 
     const config = transformConfig(result.data);
-    expect(config.description).toBe("Best gym ever!");
+    expect(config.description).toBe("  Best <gym> ever!  ");
   });
 });

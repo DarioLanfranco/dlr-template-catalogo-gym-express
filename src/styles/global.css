@@ -9,6 +9,13 @@
   --color-surface: #1A1A1A;
 
   --ease-spring: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --hero-overlay-start: rgba(18, 18, 18, 0.95);
+  --hero-overlay-end: rgba(18, 18, 18, 0.85);
+  --service-overlay-start: rgba(0, 0, 0, 0.9);
+  --service-overlay-mid: rgba(0, 0, 0, 0.4);
+  --service-text: #ffffff;
+  --service-text-muted: rgba(255, 255, 255, 0.9);
 }
 
 [data-theme="light"] {
@@ -17,6 +24,13 @@
   --color-background: #1A1A1A;
   --color-text: #4A4A4A;
   --color-surface: #F5F5F5;
+
+  --hero-overlay-start: rgba(255, 255, 255, 0.9);
+  --hero-overlay-end: rgba(255, 255, 255, 0.8);
+  --service-overlay-start: rgba(255, 255, 255, 0.9);
+  --service-overlay-mid: rgba(255, 255, 255, 0.3);
+  --service-text: #121212;
+  --service-text-muted: rgba(18, 18, 18, 0.9);
 }
 
 /*
