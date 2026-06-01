@@ -17,11 +17,11 @@ const { siteName } = Astro.props;
   footer {
     padding: 2rem;
     text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid color-mix(in srgb, var(--color-text-base) 10%, transparent);
   }
 
   footer p {
-    color: var(--color-background);
+    color: var(--color-text-base);
     opacity: 0.7;
     font-size: 0.875rem;
   }

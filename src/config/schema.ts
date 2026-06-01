@@ -7,10 +7,19 @@ const hexColorSchema = z
     message: 'Color must be a valid hex color in format #RRGGBB',
   });
 
+function isValidUrl(val: string): boolean {
+  try {
+    new URL(val);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 // URL validation for links
 const urlSchema = z
   .string()
-  .url({ message: 'Must be a valid URL' })
+  .refine(isValidUrl, { message: 'Must be a valid URL' })
   .refine((url) => url.startsWith('https://'), {
     message: 'URL must use HTTPS protocol',
   });
@@ -34,7 +43,7 @@ const themeSchema = z.object({
 // Contact schema
 const contactSchema = z.object({
   phone: z.string().min(1, 'Phone number cannot be empty'),
-  email: z.string().email('Must be a valid email address'),
+  email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Must be a valid email address'),
   address: z.string().min(1, 'Address cannot be empty'),
   googleMapsLink: urlSchema,
   businessHours: z.string().min(1, 'Business hours cannot be empty'),
@@ -43,9 +52,9 @@ const contactSchema = z.object({
 
 // Social schema (all fields optional)
 const socialSchema = z.object({
-  instagram: z.string().url().optional(),
-  facebook: z.string().url().optional(),
-  twitter: z.string().url().optional(),
+  instagram: z.string().refine(isValidUrl, { message: 'Must be a valid URL' }).optional(),
+  facebook: z.string().refine(isValidUrl, { message: 'Must be a valid URL' }).optional(),
+  twitter: z.string().refine(isValidUrl, { message: 'Must be a valid URL' }).optional(),
 });
 
 // History schema
@@ -78,7 +87,7 @@ export const clientConfigSchema = z.object({
   theme: themeSchema,
   contact: contactSchema,
   social: socialSchema,
-  services: z.array(serviceSchema).min(0, 'Services array is required'),
+  services: z.array(serviceSchema),
   about: aboutSchema,
 });
 

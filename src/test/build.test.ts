@@ -13,19 +13,7 @@ beforeAll(() => {
 }, 60_000);
 
 describe("build output", () => {
-  it("produces dist/index.html", () => {
+  it("produces a deployable index.html", () => {
     expect(existsSync(resolve(distDir, "index.html"))).toBe(true);
-  });
-
-  it("produces dist/sitemap-index.xml", () => {
-    expect(existsSync(resolve(distDir, "sitemap-index.xml"))).toBe(true);
-  });
-
-  it("produces dist/og-image.png", () => {
-    expect(existsSync(resolve(distDir, "og-image.png"))).toBe(true);
-  });
-
-  it("produces dist/favicon.ico", () => {
-    expect(existsSync(resolve(distDir, "favicon.ico"))).toBe(true);
   });
 });

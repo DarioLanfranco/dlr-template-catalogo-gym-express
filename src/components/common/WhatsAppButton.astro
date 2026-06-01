@@ -45,12 +45,12 @@ const whatsappUrl = generateWhatsAppUrl(phoneNumber, message);
 		right: 2rem;
 		width: 3.5rem;
 		height: 3.5rem;
-		background-color: var(--color-accent);
+		background-color: var(--color-primary);
 		border-radius: 50%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: var(--color-primary);
+		color: var(--color-bg);
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 		transition: transform 0.2s var(--ease-spring), opacity 0.2s var(--ease-spring), box-shadow 0.2s var(--ease-spring), border-color 0.2s var(--ease-spring);
 		border: 2px solid transparent;
@@ -65,7 +65,7 @@ const whatsappUrl = generateWhatsAppUrl(phoneNumber, message);
 	}
 
 	.whatsapp-button:focus {
-		outline: 2px solid var(--color-background);
+		outline: 2px solid var(--color-text-base);
 		outline-offset: 2px;
 	}
 
