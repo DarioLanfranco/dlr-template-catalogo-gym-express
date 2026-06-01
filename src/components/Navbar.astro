@@ -28,13 +28,17 @@ import ThemeToggle from "./common/ThemeToggle.astro";
     <span aria-hidden="true"></span>
     <span aria-hidden="true"></span>
   </button>
-  <ul id="nav-links" class="nav-links" role="list">
-    <li><a href="#inicio">Inicio</a></li>
-    <li><a href="#conocenos">Conócenos</a></li>
-    <li><a href="#servicios">Servicios</a></li>
-    <li><a href="#sucursal">Sucursal</a></li>
-  </ul>
-  <ThemeToggle />
+  <div id="nav-links" class="nav-controls">
+    <ul class="nav-links" role="list">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#conocenos">Conócenos</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#sucursal">Sucursal</a></li>
+    </ul>
+    <div class="nav-controls-toggle">
+      <div class="theme-toggle-frame"><ThemeToggle /></div>
+    </div>
+  </div>
 </nav>
 
 <script>
@@ -55,6 +59,7 @@ import ThemeToggle from "./common/ThemeToggle.astro";
 
 <style>
   .navbar {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -122,11 +127,17 @@ import ThemeToggle from "./common/ThemeToggle.astro";
     background: var(--color-primary);
   }
 
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+  }
+
   .nav-links {
     display: flex;
     gap: 3rem;
     list-style: none;
-    margin: 0 1.5rem 0 auto;
+    margin: 0;
     padding: 0;
     align-items: center;
     height: 100%;
@@ -203,48 +214,49 @@ import ThemeToggle from "./common/ThemeToggle.astro";
       display: flex;
     }
 
-    .nav-links {
+    .nav-controls {
       position: absolute;
       top: 100%;
-      right: 1.5rem;
-      width: 200px;
+      left: 16px;
+      width: calc(100% - 32px);
       flex-direction: column;
-      background-color: var(--color-surface);
-      padding: 1.5rem;
-      gap: 1rem;
-      border-radius: 0.75rem;
-      border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
-      transform: scale(0.95);
+      gap: 0;
+      background-color: color-mix(in srgb, var(--color-bg) 75%, transparent);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 16px;
+      border-bottom: 1px solid color-mix(in srgb, var(--color-primary) 15%, transparent);
+      box-shadow: 0 10px 30px color-mix(in srgb, #000000 50%, transparent);
+      z-index: 40;
+      overflow: hidden;
+      max-height: 0;
       opacity: 0;
       pointer-events: none;
-      z-index: 40;
-      height: auto;
-      align-items: stretch;
-      padding-top: 1.5rem;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .nav-links.is-open {
-      transform: scale(1);
+    .nav-controls.is-open {
+      max-height: 500px;
       opacity: 1;
       pointer-events: auto;
     }
 
-    @media (prefers-reduced-motion: no-preference) {
-      .nav-links {
-        transition:
-          transform 0.3s var(--ease-spring),
-          opacity 0.3s var(--ease-spring);
-      }
+    .nav-links {
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+      padding: 0.5rem 0;
+      height: auto;
     }
 
     .nav-links a {
-      font-size: 0.9rem;
-      padding: 0.75rem 1rem;
-      border-radius: 0.5rem;
-      transition:
-        background-color 0.2s ease,
-        color 0.2s ease;
+      font-size: 0.95rem;
+      padding: 10px 24px;
+      border: 1px solid transparent;
+      border-radius: 0;
+      transition: all 0.3s ease;
       text-align: center;
+      display: block;
     }
 
     .nav-links a::after {
@@ -253,12 +265,50 @@ import ThemeToggle from "./common/ThemeToggle.astro";
 
     .nav-links a:hover,
     .nav-links a:focus-visible {
-      background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+      background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
+      border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+      border-radius: 12px;
       color: var(--color-primary);
     }
 
     .nav-links a.active {
-      background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+      background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
+      border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+      border-radius: 12px;
+      color: var(--color-primary);
+    }
+
+    .nav-controls-toggle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      padding: 0.5rem 0 1.5rem;
+    }
+
+    .nav-controls-toggle::before {
+      content: "";
+      display: block;
+      width: 80%;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent,
+        color-mix(in srgb, var(--color-text-base) 15%, transparent),
+        transparent
+      );
+      margin-bottom: 1rem;
+    }
+
+    .theme-toggle-frame {
+      border-radius: 50%;
+      padding: 12px;
+      background-color: color-mix(in srgb, var(--color-text-base) 5%, transparent);
+      transition: transform 0.3s var(--ease-spring);
+    }
+
+    .theme-toggle-frame:hover {
+      transform: scale(1.05);
     }
   }
 </style>
