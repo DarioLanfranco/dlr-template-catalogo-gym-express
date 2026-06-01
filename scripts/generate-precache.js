@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const distDir = resolve(__dirname, "../dist");
+const base = process.env.BASE_URL || "";
 
 if (!existsSync(distDir)) {
   console.error("[precache] dist/ not found — skipping (run `astro build` first)");
@@ -27,26 +28,26 @@ function walk(dir) {
 }
 
 const allFiles = walk(distDir);
-const assets = ["/"];
+const assets = [base || "/"];
 
 for (const filePath of allFiles) {
-  const rel = "/" + relative(distDir, filePath).replace(/\\/g, "/");
+  const rel = base + "/" + relative(distDir, filePath).replace(/\\/g, "/");
 
   const isCritical =
-    rel === "/index.html" ||
-    rel === "/manifest.json" ||
-    rel === "/robots.txt" ||
-    rel === "/favicon.svg" ||
-    rel === "/favicon.ico" ||
-    rel === "/sw.js";
+    rel === base + "/index.html" ||
+    rel === base + "/manifest.json" ||
+    rel === base + "/robots.txt" ||
+    rel === base + "/favicon.svg" ||
+    rel === base + "/favicon.ico" ||
+    rel === base + "/sw.js";
 
-  const isIcon = rel.startsWith("/icons/");
+  const isIcon = rel.startsWith(base + "/icons/");
 
   const isBundle =
-    rel.startsWith("/_astro/") &&
+    rel.startsWith(base + "/_astro/") &&
     (rel.endsWith(".css") || rel.endsWith(".js") || rel.endsWith(".woff2") || rel.endsWith(".svg"));
 
-  const isSitemap = rel.startsWith("/sitemap") && rel.endsWith(".xml");
+  const isSitemap = rel.startsWith(base + "/sitemap") && rel.endsWith(".xml");
 
   if (isCritical || isIcon || isBundle || isSitemap) {
     assets.push(rel);
