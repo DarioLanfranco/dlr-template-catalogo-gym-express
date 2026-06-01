@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import coachs1 from "../../assets/images/coachs1.webp";
 
 interface Service {
   id: string;
@@ -34,10 +35,12 @@ const serviceImages = Object.fromEntries(
       services.map((service) => (
         <article class="service-card reveal-on-scroll media-card" id={service.id}>
           <Image
-            src={serviceImages[service.image]}
+            src={serviceImages[service.image] ?? coachs1}
             alt={service.title}
             width={600}
             height={450}
+            format="webp"
+            quality={75}
             loading="lazy"
             class="service-card-image"
           />
