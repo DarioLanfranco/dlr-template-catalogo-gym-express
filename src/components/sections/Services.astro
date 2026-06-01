@@ -105,8 +105,8 @@ const serviceImages = Object.fromEntries(
     height: 100%;
     background: linear-gradient(
       to top,
-      rgba(0, 0, 0, 0.9),
-      rgba(0, 0, 0, 0.4),
+      var(--service-overlay-start),
+      var(--service-overlay-mid),
       transparent
     );
     display: flex;
@@ -119,11 +119,11 @@ const serviceImages = Object.fromEntries(
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: #ffffff;
+    color: var(--service-text);
   }
 
   .service-card p {
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--service-text-muted);
     line-height: 1.6;
   }
 

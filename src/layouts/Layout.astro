@@ -78,7 +78,6 @@ function parseAddress(raw: string) {
 }
 
 const localBusinessSchema = {
-  "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: siteConfig.siteName,
   description: siteConfig.description,
@@ -94,6 +93,22 @@ const localBusinessSchema = {
     siteConfig.social.instagram,
     siteConfig.social.twitter,
   ].filter(Boolean),
+};
+
+const serviceEntities = siteConfig.services.map((service) => ({
+  "@type": "Service",
+  name: service.title,
+  description: service.description,
+  provider: {
+    "@type": "LocalBusiness",
+    name: siteConfig.siteName,
+  },
+  image: OG_IMAGE_URL,
+}));
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [localBusinessSchema, ...serviceEntities],
 };
 ---
 
@@ -116,6 +131,7 @@ const localBusinessSchema = {
     <meta property="og:type" content="website" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#FF9F1C" />
     <meta name="robots" content="index, follow" />
@@ -143,7 +159,7 @@ const localBusinessSchema = {
       </script>
     )}
 
-    <JsonLd data={localBusinessSchema} />
+    <JsonLd data={schema} />
 
     <title>{title} | {siteConfig.siteName}</title>
 
